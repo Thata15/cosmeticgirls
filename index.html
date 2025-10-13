@@ -5,6 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Loja Cacheia+ — Feminina & Interativa</title>
 <style>
+  .taskbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.taskbar .categories {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.taskbar .categories button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--accent2);
+  font-size: 0.95em;
+  transition: color 0.2s;
+}
+
+.taskbar .categories button:hover {
+  color: var(--danger);
+}
+
+.taskbar .cart-icon {
+  background: var(--accent2);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background 0.3s;
+}
+
+.taskbar .cart-icon:hover {
+  background: var(--accent);
+}
+
 :root{
   --bg:#fff0f5; --panel:#ffe4f0; --muted:#d1b0c5; --text: #000; --accent:#ffb6c1; --accent2:#ff69b4; --danger:#ff7b72;
   --mono: ui-monospace, SFMono-Regular, Helvetica, Monaco, Poppins, "Liberation Mono", "Courier New", monospace;
@@ -125,10 +179,23 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
   </div>
 
   <!-- Barra de busca -->
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Buscar produtos ou tags...">
-    <button onclick="buscar()">Pesquisar</button>
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Buscar produtos ou tags...">
+  <button onclick="buscar()">Pesquisar</button>
+</div>
+<!-- Cabeçalho de tarefas -->
+<div class="taskbar">
+  <div class="categories">
+    <button onclick="filtrarCategoria('salon line')">Salon Line</button>
+    <button onclick="filtrarCategoria('kolene')">Kolene</button>
+    <button onclick="filtrarCategoria('seda')">Seda</button>
+    <button onclick="filtrarCategoria('skala')">Skala</button>
+    <button onclick="filtrarCategoria('elseve')">Elseve</button>
   </div>
+  <button class="cart-icon" onclick="abrirPopupCarrinho()" title="Sacola">
+    🛒
+  </button>
+</div>
 
   <!-- Grid de produtos -->
   <div class="grid" id="productGrid"></div>
@@ -289,8 +356,29 @@ document.querySelector('.add-cart').addEventListener('click', ()=>{
   const produto = catalogo.find(p=>p.nome===produtoNome);
   abrirPopup(produto);
 });
+  function filtrarCategoria(nome) {
+  const resultados = catalogo.filter(p =>
+    p.nome.toLowerCase().includes(nome.toLowerCase()) ||
+    p.tags.some(t => t.toLowerCase().includes(nome.toLowerCase()))
+  );
+  if (resultados.length === 0) {
+    alert(`Nenhum produto encontrado para ${nome}.`);
+  } else {
+    renderProdutos(resultados);
+    voltarGrid(); // Garante que saia da tela de produto individual
+  }
+}
+
+function abrirPopupCarrinho() {
+  if (currentProduct) {
+    abrirPopup(currentProduct);
+  } else {
+    alert("Sua sacola está vazia no momento.");
+  }
+}
 </script>
 </body>
 </html>
+
 
 
