@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loja Cacheia+ — Feminina & Interativa</title>
+<style>
+:root{
+  --bg:#fff0f5; --panel:#ffe4f0; --muted:#d1b0c5; --text: #000; --accent:#ffb6c1; --accent2:#ff69b4; --danger:#ff7b72;
+  --mono: ui-monospace, SFMono-Regular, Helvetica, Monaco, Poppins, "Liberation Mono", "Courier New", monospace;
+}
+*{box-sizing:border-box;}
+body{margin:0; font-family:var(--mono); background:var(--bg); color:var(--text);}
+.wrap{max-width:750px; margin:0 auto; padding:24px;}
+header{display:flex; align-items:center; gap:10px; margin-bottom:24px;}
+header .logo{width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#ffb6c1,#ff69b4); display:grid; place-items:center; color:#fff; font-weight:200; font-size:22px;}
+header h1{font-size:24px; margin:0;}
+header small{opacity:.7; font-size:0.85em;}
+.search-bar{margin-bottom:30px; display:flex; gap:8px;}
+.search-bar input{flex:1; padding:8px 20px; border-radius:12px; border:2px solid var(--muted); background:#fff0f5; color:var(--text);}
+.search-bar button{padding:8px 14px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;}
+.grid{display:grid; grid-template-columns:1fr; gap:14px;}
+@media(min-width:680px){ .grid{grid-template-columns:repeat(3,1fr);} }
+.card{background:var(--panel); border-radius:16px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform .2s;}
+.card:hover{transform:translateY(-4px);}
+.card img{width:100%; height:190px; object-fit:cover; border-radius:25px;}
+.card-content{width:100%; text-align:center; margin-top:8px;}
+.card-content h4{margin:0 0 6px 0; font-size:1.05em;}
+.card-content .dim{opacity:.75; font-size:0.85em;}
+.price-btn{margin-top:6px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:0.8em; padding:4px 8px; cursor:pointer; opacity:0.85; transition:opacity .2s;}
+.price-btn:hover{opacity:1;}
+
+/* Botão Voltar */
+.back-btn {
+  display:block;
+  margin-bottom:10px;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.back-btn:hover{opacity:0.9; transform:translateY(-2px);}
+
+/* Produto individual */
+#productView{display:none; margin-top:20px;}
+#productView .main-image img{width:100%;max-height:400px;object-fit:contain;border-radius:16px;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+.product-images{display:flex;gap:10px;margin-bottom:20px;}
+.product-images img{width:80px;height:80px;object-fit:cover;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:border .2s;}
+.product-images img.selected{border-color:var(--accent2);}
+h1#productName{margin:10px 0;font-size:1.6em;}
+p#productDescription{font-size:1em;opacity:0.85;margin-bottom:10px;}
+.price{font-size:2em;color:var(--accent2); font-weight:bold;margin:15px 0;}
+.buttons{display:flex;gap:12px;margin-bottom:20px;}
+button.add-cart{background:var(--accent2);color:#fff;}
+button.add-cart:hover{transform:translateY(-2px);opacity:0.9;}
+button.quick-buy{background:#fff;border:2px solid var(--accent2);color:var(--accent2);}
+button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
+.shipping{margin-top:20px;padding:15px;background:var(--bg);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
+.shipping input{padding:8px;border-radius:8px;border:1px solid var(--muted);width:150px;margin-right:10px;}
+
+/* Pop-up sacola */
+#cartPopup {
+  position: fixed;
+  top: 20%;
+  left: -350px;
+  width: 300px;
+  background: var(--panel);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 16px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  font-family: var(--mono);
+}
+#cartPopup.show { left: 20px; }
+#cartPopup .popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+#cartPopup .popup-header h4 { margin:0; font-size:1em; }
+#cartPopup .popup-header button { background:none; border:none; font-size:1.2em; cursor:pointer; }
+#cartPopup .popup-body { display:flex; gap:10px; margin-bottom:10px; }
+#cartPopup .popup-body img { width:80px; height:80px; object-fit:cover; border-radius:8px; }
+#cartPopup .popup-info { flex:1; display:flex; flex-direction:column; justify-content:space-between; }
+#cartPopup .quantity { display:flex; align-items:center; gap:5px; margin-top:5px; }
+#cartPopup .quantity button { width:24px; height:24px; border:none; background:var(--accent2); color:#fff; border-radius:6px; cursor:pointer; }
+#cartPopup .subtotal { font-weight:bold; margin:10px 0; }
+#cartPopup .popup-actions button { width:100%; padding:8px; margin-bottom:5px; border:none; border-radius:8px; cursor:pointer; }
+#cartPopup .popup-actions .continue { background:var(--accent); color:#fff; }
+#cartPopup .popup-actions .checkout { background:var(--accent2); color:#fff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">C+</div>
+    <h1>Loja Cacheia+ <small>— Feminina & Interativa</small></h1>
+  </header>
+
+  <!-- Visão do produto individual -->
+  <div id="productView">
+    <button class="back-btn" onclick="voltarGrid()">← Voltar</button>
+
+    <div class="main-image">
+      <img id="mainImage" src="" alt="Produto">
+    </div>
+    <div class="product-images" id="thumbnails"></div>
+    <h1 id="productName"></h1>
+    <p id="productDescription"></p>
+    <p class="price" id="productPrice"></p>
+    <div class="buttons">
+      <button class="add-cart">Adicionar à sacola</button>
+      <button class="quick-buy" onclick="compraRapida()">Compra rápida</button>
+    </div>
+    <div class="shipping">
+      <label for="cep">Calcular frete (CEP):</label><br>
+      <input type="text" id="cep" placeholder="Digite seu CEP">
+      <button onclick="calcularFrete()">Calcular</button>
+      <p id="freteResult"></p>
+    </div>
+  </div>
+
+  <!-- Barra de busca -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Buscar produtos ou tags...">
+    <button onclick="buscar()">Pesquisar</button>
+  </div>
+
+  <!-- Grid de produtos -->
+  <div class="grid" id="productGrid"></div>
+</div>
+
+<!-- Pop-up sacola -->
+<div id="cartPopup">
+  <div class="popup-header">
+    <h4>Sacola</h4>
+    <button onclick="fecharPopup()">×</button>
+  </div>
+  <div class="popup-body">
+    <img id="cartImage" src="" alt="Produto">
+    <div class="popup-info">
+      <span id="cartName"></span>
+      <span id="cartPrice"></span>
+      <div class="quantity">
+        <button onclick="alterarQtd(-1)">-</button>
+        <span id="cartQty">1</span>
+        <button onclick="alterarQtd(1)">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="subtotal">Subtotal: R$ <span id="cartSubtotal">0.00</span></div>
+  <div class="popup-actions">
+    <button class="continue" onclick="fecharPopup()">Continuar comprando</button>
+    <button class="checkout" onclick="finalizarCompra()">Finalizar compra</button>
+  </div>
+</div>
+
+<script>
+const catalogo = [
+  {id:'P001', nome:'Kit Completo Definição Natural', categoria:'Kit', preco:96.30, tags:['sem-sulfato','babosa'], desc:'O kit contém 1 Creme para Pentear Definição Natural 1kg e 1 Creme para Pentear Definição Intensa 1kg, a combinação perfeita.', images:['123.png','123a.png','123b.png','123c.png']},
+  {id:'P002', nome:'Kit com 3 Óleos de Tratamento', categoria:'óleo', preco:49.9, tags:['óleo-de-argan','sem-sulfato'], desc:'O Kit com 3 Óleos de Tratamento conta com Óleos de 42ml cada da linha SOS Cachos.', images:['1234.png','1234a.png','1234b.png']},
+  {id:'P004', nome:'Kit SOS Cachos Coco Profundo', categoria:'kit', preco:72.90, tags:['óleos de coco','desembaraço'], desc:'Shampoo e Condicionador Salon Line.', images:['12345.png','12345a.png']},
+];
+
+function renderProdutos(lista){
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML='';
+  lista.forEach(p=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      <img src="${p.images[0]}" alt="${p.nome}">
+      <div class="card-content">
+        <h4>${p.nome}</h4>
+        <div class="dim">${p.categoria}</div>
+        <button class="price-btn" onclick="verProduto('${p.id}')">Ver preço</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function buscar(){
+  const termo=document.getElementById('searchInput').value.toLowerCase();
+  const resultados=catalogo.filter(p=>{
+    return p.nome.toLowerCase().includes(termo)||p.tags.some(t=>t.includes(termo));
+  });
+  if(resultados.length===0){ alert('Nenhum produto encontrado.'); }
+  else { renderProdutos(resultados); }
+}
+
+function verProduto(id){
+  const produto = catalogo.find(p => p.id === id);
+  if(!produto) return;
+
+  document.getElementById('productGrid').style.display='none';
+  document.getElementById('productView').style.display='block';
+
+  document.getElementById('productName').textContent = produto.nome;
+  document.getElementById('productDescription').textContent = produto.desc;
+  document.getElementById('productPrice').textContent = `R$ ${produto.preco.toFixed(2)}`;
+  document.getElementById('mainImage').src = produto.images[0];
+
+  const thumbnails = document.getElementById('thumbnails');
+  thumbnails.innerHTML='';
+  produto.images.forEach((imgSrc,index)=>{
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    if(index===0) img.classList.add('selected');
+    img.addEventListener('click',()=>{
+      document.getElementById('mainImage').src = imgSrc;
+      document.querySelectorAll('.product-images img').forEach(i=>i.classList.remove('selected'));
+      img.classList.add('selected');
+    });
+    thumbnails.appendChild(img);
+  });
+}
+
+function voltarGrid(){
+  document.getElementById('productView').style.display='none';
+  document.getElementById('productGrid').style.display='grid';
+  document.getElementById('freteResult').textContent='';
+  document.getElementById('cep').value='';
+}
+
+function calcularFrete(){
+  const cep = document.getElementById('cep').value;
+  if(cep.length>=8){
+    document.getElementById('freteResult').textContent = "Frete: R$ 12,90 (3-5 dias úteis)";
+  } else {
+    document.getElementById('freteResult').textContent = "Digite um CEP válido.";
+  }
+}
+
+renderProdutos(catalogo);
+
+/* Pop-up sacola */
+let currentProduct = null;
+let currentQty = 1;
+
+function abrirPopup(produto){
+  currentProduct = produto;
+  currentQty = 1;
+  document.getElementById('cartImage').src = produto.images[0];
+  document.getElementById('cartName').textContent = produto.nome;
+  document.getElementById('cartPrice').textContent = `R$ ${produto.preco.toFixed(2)}`;
+  document.getElementById('cartQty').textContent = currentQty;
+  document.getElementById('cartSubtotal').textContent = (produto.preco * currentQty).toFixed(2);
+  document.getElementById('cartPopup').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('cartPopup').classList.remove('show');
+}
+
+function alterarQtd(valor){
+  currentQty += valor;
+  if(currentQty < 1) currentQty = 1;
+  document.getElementById('cartQty').textContent = currentQty;
+  document.getElementById('cartSubtotal').textContent = (currentProduct.preco * currentQty).toFixed(2);
+}
+
+function finalizarCompra(){
+  alert(`Compra finalizada!\nProduto: ${currentProduct.nome}\nQuantidade: ${currentQty}\nTotal: R$ ${(currentProduct.preco*currentQty).toFixed(2)}`);
+  fecharPopup();
+}
+
+// Compra rápida via WhatsApp
+function compraRapida() {
+  const produtoNome = document.getElementById('productName').textContent;
+  const preco = document.getElementById('productPrice').textContent;
+  const numero = "5511999999999"; // Substitua pelo seu número
+  const mensagem = `Olá! Quero comprar o produto: ${produtoNome} pelo preço de ${preco}.`;
+  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, '_blank');
+}
+
+// Botão adicionar à sacola na visão do produto
+document.querySelector('.add-cart').addEventListener('click', ()=>{
+  const produtoNome = document.getElementById('productName').textContent;
+  const produto = catalogo.find(p=>p.nome===produtoNome);
+  abrirPopup(produto);
+});
+</script>
+</body>
+</html>
