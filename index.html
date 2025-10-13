@@ -1,420 +1,664 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catálogo de Produtos</title>
-  <style>
-    :root {
-      --accent: #ff6f61;
-      --background: #f8f8f8;
-      --text-color: #333;
-      --button-bg: var(--accent);
-      --button-hover: #e65b50;
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loja Cacheia+ — Feminina & Interativa</title>
+<style>
+  .taskbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .taskbar .categories {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .taskbar .categories button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--accent2);
+    font-size: 0.95em;
+    transition: color 0.2s;
+  }
+
+  .taskbar .categories button:hover {
+    color: var(--danger);
+  }
+
+  .taskbar .cart-icon {
+    background: var(--accent2);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s;
+  }
+
+  .taskbar .cart-icon:hover {
+    background: var(--accent);
+  }
+
+  :root {
+    --bg:#fff0f5; --panel:#ffe4f0; --muted:#d1b0c5; --text: #000; --accent:#ffb6c1; --accent2:#ff69b4; --danger:#ff7b72;
+    --mono: ui-monospace, SFMono-Regular, Helvetica, Monaco, Poppins, "Liberation Mono", "Courier New", monospace;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: var(--mono);
+    background: var(--bg);
+    color: var(--text);
+  }
+  .wrap {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  header .logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#ffb6c1,#ff69b4);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 200;
+    font-size: 22px;
+  }
+  header h1 {
+    font-size: 24px;
+    margin: 0;
+  }
+  header small {
+    opacity: .7;
+    font-size: 0.85em;
+  }
+  .search-bar {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 8px;
+  }
+  .search-bar input {
+    flex: 1;
+    padding: 8px 20px;
+    border-radius: 12px;
+    border: 2px solid var(--muted);
+    background: #fff0f5;
+    color: var(--text);
+  }
+  .search-bar button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--accent2);
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media(min-width: 680px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
     }
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: var(--background);
-      color: var(--text-color);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-    /* Barra de busca */
-    .search-bar {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 8px;
-      width: 100%;
-      max-width: 700px;
-    }
-    .search-bar input {
-      flex-grow: 1;
-      padding: 10px 14px;
-      font-size: 1em;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      outline-offset: 2px;
-    }
-    .search-bar button {
-      background: var(--button-bg);
-      border: none;
-      color: white;
-      padding: 10px 18px;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .search-bar button:hover {
-      background: var(--button-hover);
-    }
-    /* Taskbar com voltar, categorias e carrinho */
-    #mainTaskbar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      width: 100%;
-      max-width: 700px;
-      justify-content: space-between;
-    }
-    .back-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      padding: 6px 14px;
-      font-weight: bold;
-      font-size: 0.9em;
-      transition: opacity 0.2s, transform 0.2s;
-      flex-shrink: 0;
-    }
-    .back-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-    .categories {
-      display: flex;
-      gap: 10px;
-      flex-grow: 1;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .categories button {
-      background: #ddd;
-      border: none;
-      border-radius: 10px;
-      padding: 6px 14px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background-color 0.2s;
-      font-size: 0.9em;
-    }
-    .categories button:hover {
-      background: var(--accent);
-      color: white;
-    }
-    .cart-icon {
-      background: transparent;
-      border: none;
-      font-size: 1.8em;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: color 0.2s;
-    }
-    .cart-icon:hover {
-      color: var(--accent);
-    }
-    /* Grade de produtos */
-    #productGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 18px;
-      width: 100%;
-      max-width: 700px;
-    }
-    .produto-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-      padding: 14px;
-      cursor: pointer;
-      transition: transform 0.2s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    .produto-card:hover {
-      transform: translateY(-5px);
-    }
-    .produto-card img {
-      max-width: 100%;
-      height: 140px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-    .produto-nome {
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-    .produto-tags {
-      font-size: 0.85em;
-      color: #777;
-      margin-bottom: 10px;
-    }
-    /* Visão do produto individual */
-    #productView {
-      display: none;
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      width: 100%;
-      max-width: 700px;
-      box-shadow: 0 2px 10px rgb(0 0 0 / 0.15);
-      text-align: center;
-      position: relative;
-    }
-    #productView img {
-      max-width: 250px;
-      height: auto;
-      object-fit: contain;
-      margin-bottom: 20px;
-    }
-    #productView h2 {
-      margin-bottom: 10px;
-    }
-    #productView p {
-      color: #555;
-      margin-bottom: 15px;
-    }
-    #closeViewBtn {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-weight: bold;
-      font-size: 1.2em;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0;
-      user-select: none;
-      transition: background-color 0.2s;
-    }
-    #closeViewBtn:hover {
-      background: #e65b50;
-    }
-    /* Frete e CEP */
-    #freteSection {
-      margin-top: 15px;
-      text-align: center;
-    }
-    #cep {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      width: 120px;
-      margin-right: 8px;
-      font-size: 1em;
-    }
-    #calcularFreteBtn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 7px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background-color 0.2s;
-    }
-    #calcularFreteBtn:hover {
-      background: #e65b50;
-    }
-    #freteResult {
-      margin-top: 10px;
-      font-weight: bold;
-      color: var(--accent);
-    }
-  </style>
+  }
+  .card {
+    background: var(--panel);
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform .2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  .card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 25px;
+  }
+  .card-content {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+  }
+  .card-content h4 {
+    margin: 0 0 6px 0;
+    font-size: 1.05em;
+  }
+  .card-content .dim {
+    opacity: .75;
+    font-size: 0.85em;
+  }
+  .price-btn {
+    margin-top: 6px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8em;
+    padding: 4px 8px;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity .2s;
+  }
+  .price-btn:hover {
+    opacity: 1;
+  }
+
+  /* Botão Voltar */
+  .back-btn {
+    display: block;
+    margin-bottom: 10px;
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .back-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* Produto individual */
+  #productView {
+    display: none;
+    margin-top: 20px;
+  }
+  #productView .main-image img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .product-images {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .product-images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border .2s;
+  }
+  .product-images img.selected {
+    border-color: var(--accent2);
+  }
+  h1#productName {
+    margin: 10px 0;
+    font-size: 1.6em;
+  }
+  p#productDescription {
+    font-size: 1em;
+    opacity: 0.85;
+    margin-bottom: 10px;
+  }
+  .price {
+    font-size: 2em;
+    color: var(--accent2);
+    font-weight: bold;
+    margin: 15px 0;
+  }
+  .buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  button.add-cart {
+    background: var(--accent2);
+    color: #fff;
+  }
+  button.add-cart:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+  button.quick-buy {
+    background: #fff;
+    border: 2px solid var(--accent2);
+    color: var(--accent2);
+  }
+  button.quick-buy:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+  .shipping {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .shipping input {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--muted);
+    width: 150px;
+    margin-right: 10px;
+  }
+
+  /* Pop-up sacola */
+  #cartPopup {
+    position: fixed;
+    top: 20%;
+    left: -350px;
+    width: 300px;
+    background: var(--panel);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    font-family: var(--mono);
+  }
+  #cartPopup.show {
+    left: 20px;
+  }
+  #cartPopup .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  #cartPopup .popup-header h4 {
+    margin: 0;
+    font-size: 1em;
+  }
+  #cartPopup .popup-header button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  #cartPopup ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  #cartPopup ul li {
+    border-bottom: 1px solid var(--muted);
+    padding: 8px 0;
+    font-size: 0.9em;
+  }
+
+  /* Cabeçalho do catálogo */
+  #header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    max-width: 700px;
+    width: 100%;
+  }
+  #header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    flex-grow: 1;
+  }
+  #extraBackBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: none;
+  }
+  #extraBackBtn svg {
+    stroke: #ff6f61;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+</style>
 </head>
 <body>
+<div class="wrap">
 
-  <!-- Barra de busca -->
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Buscar produtos ou tags...">
-    <button onclick="buscar()">Pesquisar</button>
-  </div>
+  <header>
+    <div class="logo" aria-label="Logo Cacheia+">CP</div>
+    <div>
+      <h1>Loja Cacheia+</h1>
+      <small>Feminina & Interativa</small>
+    </div>
+  </header>
 
-  <!-- Taskbar com botão voltar, categorias e carrinho -->
-  <div id="mainTaskbar" class="taskbar">
-    <button class="back-btn" onclick="voltarParaCatalogo()">← Voltar</button>
+  <!-- Taskbar -->
+  <nav class="taskbar" aria-label="Categorias">
     <div class="categories">
-      <button onclick="filtrarCategoria('salon line')">Salon Line</button>
-      <button onclick="filtrarCategoria('kolene')">Kolene</button>
-      <button onclick="filtrarCategoria('seda')">Seda</button>
-      <button onclick="filtrarCategoria('skala')">Skala</button>
-      <button onclick="filtrarCategoria('elseve')">Elseve</button>
+      <button onclick="filtrarCategoria('Cachos')">Cachos</button>
+      <button onclick="filtrarCategoria('Alisados')">Alisados</button>
+      <button onclick="filtrarCategoria('Misturados')">Misturados</button>
     </div>
-    <button class="cart-icon" onclick="abrirPopupCarrinho()" title="Sacola">🛒</button>
+    <button class="cart-icon" aria-label="Abrir sacola" title="Abrir sacola" onclick="toggleCartPopup()">
+      🛒
+    </button>
+  </nav>
+
+  <!-- Cabeçalho catálogo + seta extra -->
+  <div id="header" role="banner">
+    <h1>Catálogo de Produtos</h1>
+    <button id="extraBackBtn" aria-label="Voltar ao catálogo geral" title="Voltar ao catálogo geral" onclick="voltarParaCatalogo()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
   </div>
 
-  <!-- Grade de produtos -->
-  <div id="productGrid"></div>
-
-  <!-- Visão individual do produto -->
-  <div id="productView">
-    <button id="closeViewBtn" onclick="fecharProduto()">×</button>
-    <img id="productViewImg" src="" alt="Produto" />
-    <h2 id="productViewNome"></h2>
-    <p id="productViewTags"></p>
-    <div id="freteSection">
-      <input type="text" id="cep" placeholder="CEP" maxlength="8" />
-      <button id="calcularFreteBtn" onclick="calcularFrete()">Calcular Frete</button>
-      <div id="freteResult"></div>
-    </div>
+  <!-- Busca -->
+  <div class="search-bar" role="search">
+    <input type="search" id="searchInput" placeholder="Buscar produto..." aria-label="Buscar produto" oninput="buscaProduto()" />
+    <button onclick="buscaProduto()">Buscar</button>
   </div>
 
-  <script>
-    // Catálogo inicial dos produtos
-    const catalogo = [
-      {
-        id: 1,
-        nome: "Shampoo Salon Line",
-        tags: ["salon line", "shampoo", "cabelo"],
-        imagem: "https://i.imgur.com/JG6lk9T.png"
-      },
-      {
-        id: 2,
-        nome: "Condicionador Kolene",
-        tags: ["kolene", "condicionador", "cabelo"],
-        imagem: "https://i.imgur.com/f2qj7MY.png"
-      },
-      {
-        id: 3,
-        nome: "Creme Seda",
-        tags: ["seda", "creme", "cabelo"],
-        imagem: "https://i.imgur.com/e5UB0r3.png"
-      },
-      {
-        id: 4,
-        nome: "Máscara Skala",
-        tags: ["skala", "máscara", "cabelo"],
-        imagem: "https://i.imgur.com/gW5wXv1.png"
-      },
-      {
-        id: 5,
-        nome: "Shampoo Elseve",
-        tags: ["elseve", "shampoo", "cabelo"],
-        imagem: "https://i.imgur.com/8GZcErT.png"
-      },
-      {
-        id: 6,
-        nome: "Condicionador Elseve",
-        tags: ["elseve", "condicionador", "cabelo"],
-        imagem: "https://i.imgur.com/aKUhXVQ.png"
+  <!-- Grid de produtos -->
+  <div id="catalogo" class="grid" role="list" aria-live="polite"></div>
+
+  <!-- Produto individual -->
+  <section id="productView" aria-live="polite">
+    <button class="back-btn" onclick="voltarParaCatalogo()">← Voltar</button>
+    <div class="main-image"><img src="" alt="" id="mainImage"/></div>
+    <div class="product-images" id="productImages"></div>
+    <h1 id="productName"></h1>
+    <p id="productDescription"></p>
+    <div class="price" id="productPrice"></div>
+    <div class="buttons">
+      <button class="add-cart" onclick="adicionarSacola()">Adicionar à sacola</button>
+      <button class="quick-buy" onclick="comprarAgora()">Comprar agora</button>
+    </div>
+
+    <div class="shipping" role="region" aria-label="Consulta de frete">
+      <input type="text" id="cepInput" placeholder="Digite seu CEP" aria-label="CEP para cálculo do frete"/>
+      <button onclick="consultarFrete()">Calcular Frete</button>
+      <p id="freteResult"></p>
+    </div>
+  </section>
+
+  <!-- Pop-up Sacola -->
+  <aside id="cartPopup" role="dialog" aria-modal="true" aria-label="Sacola de compras">
+    <div class="popup-header">
+      <h4>Sacola</h4>
+      <button onclick="toggleCartPopup()" aria-label="Fechar sacola">×</button>
+    </div>
+    <ul id="cartList"></ul>
+  </aside>
+
+</div>
+
+<script>
+  const catalogo = [
+    {
+      id: 1,
+      nome: "Shampoo para Cachos",
+      descricao: "Shampoo especial para cabelos cacheados, hidratação intensa.",
+      preco: 35.90,
+      tags: ["Cachos"],
+      imagens: [
+        "https://images.unsplash.com/photo-1600185367077-6a2d9a0c3a8f?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80"
+      ]
+    },
+    {
+      id: 2,
+      nome: "Creme Alisante",
+      descricao: "Creme para alisar cabelos, efeito duradouro e brilho.",
+      preco: 45.50,
+      tags: ["Alisados"],
+      imagens: [
+        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1600185367077-6a2d9a0c3a8f?auto=format&fit=crop&w=600&q=80"
+      ]
+    },
+    {
+      id: 3,
+      nome: "Máscara Misturada",
+      descricao: "Máscara para cabelos misturados, cuidado completo.",
+      preco: 39.00,
+      tags: ["Misturados"],
+      imagens: [
+        "https://images.unsplash.com/photo-1536305033309-b2fc77648559?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+      ]
+    },
+    {
+      id: 4,
+      nome: "Condicionador para Cachos",
+      descricao: "Condicionador nutritivo para cabelos cacheados.",
+      preco: 29.90,
+      tags: ["Cachos"],
+      imagens: [
+        "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+      ]
+    },
+    {
+      id: 5,
+      nome: "Máscara Alisadora",
+      descricao: "Máscara hidratante para cabelos alisados.",
+      preco: 49.90,
+      tags: ["Alisados"],
+      imagens: [
+        "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1536305033309-b2fc77648559?auto=format&fit=crop&w=600&q=80"
+      ]
+    },
+    {
+      id: 6,
+      nome: "Creme para Misturados",
+      descricao: "Creme para cabelos misturados, definição e brilho.",
+      preco: 37.80,
+      tags: ["Misturados"],
+      imagens: [
+        "https://images.unsplash.com/photo-1600185367077-6a2d9a0c3a8f?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80"
+      ]
+    }
+  ];
+
+  let sacola = [];
+  let produtoSelecionado = null;
+
+  const catalogoDiv = document.getElementById('catalogo');
+  const productView = document.getElementById('productView');
+  const mainImage = document.getElementById('mainImage');
+  const productImagesDiv = document.getElementById('productImages');
+  const productName = document.getElementById('productName');
+  const productDescription = document.getElementById('productDescription');
+  const productPrice = document.getElementById('productPrice');
+  const freteResult = document.getElementById('freteResult');
+  const cepInput = document.getElementById('cepInput');
+  const searchInput = document.getElementById('searchInput');
+  const extraBackBtn = document.getElementById('extraBackBtn');
+  const cartPopup = document.getElementById('cartPopup');
+  const cartList = document.getElementById('cartList');
+
+  function renderProdutos(produtos) {
+    catalogoDiv.innerHTML = '';
+    productView.style.display = 'none';
+    catalogoDiv.style.display = 'grid';
+
+    if (produtos.length === 0) {
+      catalogoDiv.innerHTML = '<p>Nenhum produto encontrado.</p>';
+      return;
+    }
+
+    produtos.forEach(produto => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('role', 'listitem');
+      card.innerHTML = `
+        <img src="${produto.imagens[0]}" alt="${produto.nome}">
+        <div class="card-content">
+          <h4>${produto.nome}</h4>
+          <p class="dim">${produto.descricao}</p>
+          <button class="price-btn" aria-label="Ver detalhes do produto ${produto.nome}" onclick="mostrarProduto(${produto.id})">
+            R$ ${produto.preco.toFixed(2)}
+          </button>
+        </div>
+      `;
+      catalogoDiv.appendChild(card);
+    });
+  }
+
+  function mostrarProduto(id) {
+    produtoSelecionado = catalogo.find(p => p.id === id);
+    if (!produtoSelecionado) return;
+
+    mainImage.src = produtoSelecionado.imagens[0];
+    mainImage.alt = produtoSelecionado.nome;
+    productImagesDiv.innerHTML = '';
+    produtoSelecionado.imagens.forEach((img, i) => {
+      const thumb = document.createElement('img');
+      thumb.src = img;
+      thumb.alt = produtoSelecionado.nome + ' - imagem ' + (i + 1);
+      if(i === 0) thumb.classList.add('selected');
+      thumb.onclick = () => {
+        mainImage.src = img;
+        productImagesDiv.querySelectorAll('img').forEach(im => im.classList.remove('selected'));
+        thumb.classList.add('selected');
       }
-    ];
+      productImagesDiv.appendChild(thumb);
+    });
 
-    const productGrid = document.getElementById('productGrid');
-    const productView = document.getElementById('productView');
-    const productViewImg = document.getElementById('productViewImg');
-    const productViewNome = document.getElementById('productViewNome');
-    const productViewTags = document.getElementById('productViewTags');
-    const freteResult = document.getElementById('freteResult');
-    const cepInput = document.getElementById('cep');
+    productName.textContent = produtoSelecionado.nome;
+    productDescription.textContent = produtoSelecionado.descricao;
+    productPrice.textContent = `R$ ${produtoSelecionado.preco.toFixed(2)}`;
 
-    // Renderiza a lista de produtos no grid
-    function renderProdutos(lista) {
-      productGrid.innerHTML = '';
-      if (lista.length === 0) {
-        productGrid.innerHTML = '<p>Nenhum produto encontrado.</p>';
-        return;
-      }
-      lista.forEach(produto => {
-        const card = document.createElement('div');
-        card.className = 'produto-card';
-        card.onclick = () => abrirProduto(produto);
-        card.innerHTML = `
-          <img src="${produto.imagem}" alt="${produto.nome}" />
-          <div class="produto-nome">${produto.nome}</div>
-          <div class="produto-tags">${produto.tags.join(', ')}</div>
-        `;
-        productGrid.appendChild(card);
-      });
-      productGrid.style.display = 'grid';
-      productView.style.display = 'none';
+    catalogoDiv.style.display = 'none';
+    productView.style.display = 'block';
+    freteResult.textContent = '';
+    cepInput.value = '';
+
+    // Oculta a seta extra quando mostrando produto
+    extraBackBtn.style.display = 'none';
+  }
+
+  function voltarParaCatalogo() {
+    produtoSelecionado = null;
+    renderProdutos(catalogo);
+    searchInput.value = '';
+    freteResult.textContent = '';
+    cepInput.value = '';
+    // Esconde a seta extra
+    extraBackBtn.style.display = 'none';
+  }
+
+  function filtrarCategoria(categoria) {
+    const filtrados = catalogo.filter(prod => 
+      prod.tags.some(tag => tag.toLowerCase() === categoria.toLowerCase())
+    );
+    renderProdutos(filtrados);
+    limparBuscaEFrete();
+    // Mostra a seta extra para voltar
+    extraBackBtn.style.display = 'inline-flex';
+  }
+
+  function limparBuscaEFrete() {
+    searchInput.value = '';
+    freteResult.textContent = '';
+    cepInput.value = '';
+  }
+
+  function buscaProduto() {
+    const termo = searchInput.value.trim().toLowerCase();
+    if (!termo) {
+      voltarParaCatalogo();
+      return;
     }
+    const encontrados = catalogo.filter(p => p.nome.toLowerCase().includes(termo) || p.descricao.toLowerCase().includes(termo));
+    renderProdutos(encontrados);
+    // Oculta seta extra na busca
+    extraBackBtn.style.display = 'none';
+  }
 
-    // Filtra produtos por categoria (tag)
-    function filtrarCategoria(categoria) {
-      const filtrados = catalogo.filter(prod => 
-        prod.tags.some(tag => tag.toLowerCase() === categoria.toLowerCase())
-      );
-      renderProdutos(filtrados);
-      limparBuscaEFrete();
+  function adicionarSacola() {
+    if (!produtoSelecionado) return;
+    sacola.push(produtoSelecionado);
+    alert(`Produto "${produtoSelecionado.nome}" adicionado à sacola!`);
+    atualizarSacola();
+  }
+
+  function comprarAgora() {
+    if (!produtoSelecionado) return;
+    alert(`Você comprou: ${produtoSelecionado.nome} por R$ ${produtoSelecionado.preco.toFixed(2)}!`);
+  }
+
+  function consultarFrete() {
+    const cep = cepInput.value.trim();
+    if (!cep) {
+      alert('Por favor, digite um CEP válido.');
+      return;
     }
+    // Simulação básica
+    let precoFrete = (Math.random() * 20 + 10).toFixed(2);
+    freteResult.textContent = `Frete estimado para o CEP ${cep}: R$ ${precoFrete}`;
+  }
 
-    // Busca por nome ou tags contendo o texto
-    function buscar() {
-      const termo = document.getElementById('searchInput').value.trim().toLowerCase();
-      if (!termo) {
-        voltarParaCatalogo();
-        return;
-      }
-      const resultados = catalogo.filter(prod => 
-        prod.nome.toLowerCase().includes(termo) || 
-        prod.tags.some(tag => tag.toLowerCase().includes(termo))
-      );
-      renderProdutos(resultados);
-      limparBuscaEFrete();
+  function toggleCartPopup() {
+    cartPopup.classList.toggle('show');
+    atualizarSacola();
+  }
+
+  function atualizarSacola() {
+    cartList.innerHTML = '';
+    if (sacola.length === 0) {
+      cartList.innerHTML = '<li>Sacola vazia.</li>';
+      return;
     }
+    sacola.forEach((item, idx) => {
+      const li = document.createElement('li');
+      li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
+      cartList.appendChild(li);
+    });
+  }
 
-    // Abre visão individual do produto
-    function abrirProduto(produto) {
-      productViewImg.src = produto.imagem;
-      productViewImg.alt = produto.nome;
-      productViewNome.textContent = produto.nome;
-      productViewTags.textContent = produto.tags.join(', ');
-      productGrid.style.display = 'none';
-      productView.style.display = 'block';
-      freteResult.textContent = '';
-      cepInput.value = '';
-    }
+  // Inicializa a página mostrando todos produtos
+  renderProdutos(catalogo);
+</script>
 
-    // Fecha visão individual do produto
-    function fecharProduto() {
-      productView.style.display = 'none';
-      productGrid.style.display = 'grid';
-      freteResult.textContent = '';
-      cepInput.value = '';
-    }
-
-    // Função para voltar ao catálogo completo
-    function voltarParaCatalogo() {
-      renderProdutos(catalogo);
-      document.getElementById('searchInput').value = '';
-      freteResult.textContent = '';
-      cepInput.value = '';
-    }
-
-    // Limpa busca e frete ao filtrar categoria
-    function limparBuscaEFrete() {
-      document.getElementById('searchInput').value = '';
-      freteResult.textContent = '';
-      cepInput.value = '';
-    }
-
-    // Função fictícia para calcular frete (simula)
-    function calcularFrete() {
-      const cep = cepInput.value.trim();
-      if (!cep || cep.length !== 8 || !/^\d{8}$/.test(cep)) {
-        freteResult.textContent = 'Digite um CEP válido com 8 números.';
-        freteResult.style.color = 'red';
-        return;
-      }
-      freteResult.style.color = 'var(--accent)';
-      // Simula cálculo de frete aleatório
-      const valorFrete = (Math.random() * 20 + 5).toFixed(2);
-      freteResult.textContent = `Frete estimado: R$ ${valorFrete}`;
-    }
-
-    // Popup do carrinho (exemplo básico)
-    function abrirPopupCarrinho() {
-      alert('Carrinho ainda não implementado.');
-    }
-
-    // Inicializa mostrando todos os produtos
-    voltarParaCatalogo();
-  </script>
 </body>
 </html>
