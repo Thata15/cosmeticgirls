@@ -159,12 +159,17 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
   </div>
 </div>
 
+
 <script>
 const catalogo = [
-  {id:'P001', nome:'Kit Completo Definição Natural', categoria:'Kit', preco:96.30, tags:['sem-sulfato','babosa'], desc:'O kit contém 1 Creme para Pentear Definição Natural 1kg e 1 Creme para Pentear Definição Intensa 1kg, a combinação perfeita.', images:['123.png','123a.png','123b.png','123c.png']},
-  {id:'P002', nome:'Kit com 3 Óleos de Tratamento', categoria:'óleo', preco:49.9, tags:['óleo-de-argan','sem-sulfato'], desc:'O Kit com 3 Óleos de Tratamento conta com Óleos de 42ml cada da linha SOS Cachos.', images:['1234.png','1234a.png','1234b.png']},
-  {id:'P004', nome:'Kit SOS Cachos Coco Profundo', categoria:'kit', preco:72.90, tags:['óleos de coco','desembaraço'], desc:'Shampoo e Condicionador Salon Line.', images:['12345.png','12345a.png']},
+  {id:'P001', nome:'Kit Completo Definição Natural', categoria:'Kit', preco:96.30, tags:['sem-sulfato','babosa'], desc:'O kit contém 1 Creme para Pentear Definição Natural 1kg e 1 Creme para Pentear Definição Intensa 1kg, a combinação perfeita para garantir hidratação, desembaraço, definição duradoura e controle do frizz, deixando os fios macios, soltos e cheios de movimento.', images:['123.png', '123a.png', '123b.png', '123c.png']},
+  {id:'P002', nome:'Kit com 3 Óleos de Tratamento Coco, Super Óleos e Multibenefícios', categoria:'óleo', preco:49.9, tags:['óleo-de-argan','sem-sulfato'], desc:'O Kit com 3 Óleos de Tratamento conta com Óleos de 42ml cada da linha SOS Cachos Óleo de Coco, Super Óleos e 10 em 1 Multibenefícios. Cada um com benefícios incríveis para cuidar dos seus fios.', images:['1234.png', '1234a.png', '1234b.png', '1234c.png']},
+  {id:'P004', nome:'Kit SOS Cachos Coco Profundo Shampoo e Condicionador Litrão Salon Line', categoria:'kit', preco:72.90, tags:['óleos de coco','desembaraço'], desc:'Desfrute do cuidado intensivo do Kit S.O.S Hidratação Óleo de Rícino da Salon Line. Este conjunto apresenta o Shampoo Hidratante e o Condicionador, ambos com uma fórmula ultraconcentrada e poderosa, desenvolvida para nutrir e hidratar profundamente os fios. A Salon Line oferece essa combinação enriquecida com o óleo de rícino, conhecido por suas propriedades hidratantes e nutritivas. Transforme sua rotina de cuidados com os cabelos, proporcionando-lhes o tratamento que merecem. Adquira agora o Kit Shampoo e Condicionador Salon Line Óleo de Rícino para vivenciar cabelos nutridos, hidratados e radiantes.', images:['12345.png']},
+  {id:'P005', nome:'Kit Completo Definição Natural', categoria:'Kit', preco:96.30, tags:['sem-sulfato','babosa'], desc:'Quais os principais ativos do shampoo e condicionador da Salon Line de Coco? Óleo de coco: rico em vitaminas e ácidos graxos, hidrata e nutre, além de fortalecer os fios, proporcionando cabelos brilhantes e macios. Manteiga de coco: possui ácidos graxos, ideal para restaurar o cabelo danificado. Além disso, é um excelente hidratante natural, com extrema capacidade para umectação que proporciona aos fios força e brilho.', images:['123456.png']},
+  {id:'P006', nome:'Kit Definição Natural e Intensa com 2 Cremes para Pentear', categoria:'Kit', preco:68.00, tags:['sem-sulfato','babosa'], desc:'Limpeza suave para cabelos ondulados e cacheados.', images:['1234567.png']},
+
 ];
+
 
 function renderProdutos(lista){
   const grid = document.getElementById('productGrid');
@@ -287,3 +292,4 @@ document.querySelector('.add-cart').addEventListener('click', ()=>{
 </script>
 </body>
 </html>
+
