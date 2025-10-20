@@ -11,7 +11,7 @@
 }
 *{box-sizing:border-box;}
 body{margin:0; font-family:var(--mono); background:var(--bg); color:var(--text);}
-.wrap{max-width:750px; margin:0 auto; padding:24px;}
+.wrap{max-width:1200px; margin:0 auto; padding:24px;} /* ajustado para 5 cards */
 header{display:flex; align-items:center; gap:10px; margin-bottom:24px; position:relative;}
 header .logo{width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#ffb6c1,#ff69b4); display:grid; place-items:center; color:#fff; font-weight:200; font-size:22px;}
 header h1{font-size:24px; margin:0;}
@@ -32,6 +32,7 @@ header small{opacity:.7; font-size:0.85em;}
   background:var(--accent); color:#fff; cursor:pointer; display:none;
 }
 #backCatalog:hover{opacity:0.9; transform:translateY(-2px);}
+
 #cartButton{
   position:absolute; right:0; top:10px; padding:8px 12px; border:none; border-radius:12px;
   background:var(--accent2); color:#fff; cursor:pointer; font-size:18px;
@@ -42,30 +43,35 @@ header small{opacity:.7; font-size:0.85em;}
 .search-bar{margin-bottom:30px; display:flex; gap:8px;}
 .search-bar input{flex:1; padding:8px 20px; border-radius:12px; border:2px solid var(--muted); background:#fff0f5; color:var(--text);}
 .search-bar button{padding:8px 14px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;}
+
+/* >>> ALTERAÇÃO: 5 PRODUTOS POR FILEIRA EM TELAS LARGAS <<< */
 .grid{display:grid; grid-template-columns:1fr; gap:14px;}
-@media(min-width:680px){ .grid{grid-template-columns:repeat(3,1fr);} }
+/* Ajuste responsivo: 2 colunas em tablet, 5 em telas maiores */
+@media(min-width:600px){ .grid{grid-template-columns:repeat(2,1fr);} }
+@media(min-width:900px){ .grid{grid-template-columns:repeat(5,1fr);} }
+
 .card{background:var(--panel); border-radius:16px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform .2s;}
 .card:hover{transform:translateY(-4px);}
-.card img{width:100%; height:190px; object-fit:cover; border-radius:25px;}
+.card img{width:100%; height:160px; object-fit:cover; border-radius:18px;}
 .card-content{width:100%; text-align:center; margin-top:8px;}
-.card-content h4{margin:0 0 6px 0; font-size:1.05em;}
+.card-content h4{margin:0 0 6px 0; font-size:1.02em;}
 .card-content .dim{opacity:.75; font-size:0.85em;}
-.price-btn{margin-top:6px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:0.8em; padding:4px 8px; cursor:pointer; opacity:0.85; transition:opacity .2s;}
+.price-btn{margin-top:6px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:0.8em; padding:6px 8px; cursor:pointer; opacity:0.95; transition:opacity .2s;}
 .price-btn:hover{opacity:1;}
 
 /* Produto individual */
 #productView{display:none; margin-top:20px;}
 #productView .main-image img{width:100%;max-height:400px;object-fit:contain;border-radius:16px;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-.product-images{display:flex;gap:10px;margin-bottom:20px;}
+.product-images{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
 .product-images img{width:80px;height:80px;object-fit:cover;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:border .2s;}
 .product-images img.selected{border-color:var(--accent2);}
 h1#productName{margin:10px 0;font-size:1.6em;}
 p#productDescription{font-size:1em;opacity:0.85;margin-bottom:10px;}
 .price{font-size:2em;color:var(--accent2); font-weight:bold;margin:15px 0;}
-.buttons{display:flex;gap:12px;margin-bottom:20px;}
-button.add-cart{background:var(--accent2);color:#fff;}
+.buttons{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+button.add-cart{background:var(--accent2);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;}
 button.add-cart:hover{transform:translateY(-2px);opacity:0.9;}
-button.quick-buy{background:#fff;border:2px solid var(--accent2);color:var(--accent2);}
+button.quick-buy{background:#fff;border:2px solid var(--accent2);color:var(--accent2);padding:10px 14px;border-radius:10px;cursor:pointer;}
 button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 .shipping{margin-top:20px;padding:15px;background:var(--bg);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
 .shipping input{padding:8px;border-radius:8px;border:1px solid var(--muted);width:150px;margin-right:10px;}
@@ -93,12 +99,19 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 }
 #cartPopup .popup-header h4 { margin:0; font-size:1em; }
 #cartPopup .popup-header button { background:none; border:none; font-size:1.2em; cursor:pointer; }
-#cartPopup .popup-body { display:flex; gap:10px; margin-bottom:10px; flex-direction:column; }
+#cartPopup .popup-body { display:flex; gap:10px; margin-bottom:10px; flex-direction:column; max-height:300px; overflow:auto; }
 #cartPopup .popup-body div{display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;}
 #cartPopup .popup-actions button { width:100%; padding:8px; margin-bottom:5px; border:none; border-radius:8px; cursor:pointer; }
 #cartPopup .popup-actions .continue { background:var(--accent); color:#fff; }
 #cartPopup .popup-actions .checkout { background:var(--accent2); color:#fff; }
 
+/* Responsividade extra */
+@media(max-width:480px){
+  .wrap{padding:12px;}
+  .card img{height:140px;}
+  .search-bar input{padding:8px 10px;}
+  header h1{font-size:18px;}
+}
 </style>
 </head>
 <body>
@@ -168,12 +181,14 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 
 <script>
 const catalogo = [
-  {id:'P001', nome:'Kit Completo Definição Natural', categoria:'kit', preco:96.3, tags:['seda','sem-sulfato'], desc:'Descrição completa do produto.', images:['123.png','123a.png']},
-  {id:'P002', nome:'Kit Óleos Tratamento', categoria:'óleo', preco:49.9, tags:['skala'], desc:'Descrição completa do produto.', images:['1234.png','1234a.png']},
-  {id:'P003', nome:'Shampoo Salon Line', categoria:'shampoo', preco:72.9, tags:['salon line'], desc:'Descrição completa do produto.', images:['12345.png']},
+  {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['seda','sem-sulfato'], desc:'Descrição completa do produto.', images:['123.png','123a.png']},
+  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['skala'], desc:'Descrição completa do produto.', images:['1234.png','1234a.png']},
+  {id:'P003', nome:'Shampoo-Elseve', categoria:'shampoo', preco:72.9, tags:['salon line'], desc:'Descrição completa do produto.', images:['12345.png']},
   {id:'P004', nome:'Condicionador Novex', categoria:'condicionador', preco:68.0, tags:['novex'], desc:'Descrição completa do produto.', images:['123456.png']},
   {id:'P005', nome:'Máscara Elseve', categoria:'máscara', preco:55.0, tags:['elseve'], desc:'Descrição completa do produto.', images:['1234567.png']},
-  {id:'P006', nome:'Creme Kolene', categoria:'creme', preco:60.0, tags:['kolene'], desc:'Descrição completa do produto.', images:['12345678.png']}
+  {id:'P006', nome:'Creme Kolene', categoria:'creme', preco:60.0, tags:['kolene'], desc:'Descrição completa do produto.', images:['12345678.png']},
+  {id:'P007', nome:'Creme para Pentear Seda Cachos Definidos e Hidratados', categoria:'creme', preco:10.0, tags:['Seda'], desc:'Descrição completa do produto.', images:['12345678.png','12345678a.png']},
+  /* você pode adicionar mais produtos aqui para ver a grade preenchida */
 ];
 
 let cart = [];
@@ -198,13 +213,31 @@ function renderProdutos(lista){
     grid.appendChild(card);
   });
   document.getElementById('backCatalog').style.display='none';
+  // Mostrar grid caso esteja oculto (ex.: depois de ver produto)
+  document.getElementById('productGrid').style.display = 'grid';
 }
 
-// Filtrar por marca
-function filtrarPorMarca(marca){
-  const resultados = catalogo.filter(p => p.tags.some(t=>t.toLowerCase()===marca.toLowerCase()));
+// Filtrar por marca (aceita tags como string ou array)
+function filtrarPorMarca(marca) {
+  console.log("Marca clicada:", marca);
+
+  const resultados = catalogo.filter(p => {
+    if (!p.tags) return false; // se não existir tags, ignora
+
+    if (Array.isArray(p.tags)) {
+      // se for array, verifica se algum item bate
+      return p.tags.some(t => t.toLowerCase().trim() === marca.toLowerCase().trim());
+    } else if (typeof p.tags === "string") {
+      // se for string simples
+      return p.tags.toLowerCase().trim() === marca.toLowerCase().trim();
+    }
+    return false;
+  });
+
+  console.log("Resultados encontrados:", resultados);
+
   renderProdutos(resultados);
-  document.getElementById('backCatalog').style.display='inline-block';
+  document.getElementById('backCatalog').style.display = 'inline-block';
 }
 
 // Voltar para catálogo geral
@@ -277,13 +310,16 @@ function fecharPopup(){
 }
 
 // Adicionar ao carrinho
-document.querySelector('.add-cart').addEventListener('click',()=>{
-  const produto = currentProduct;
-  if(!produto) return;
-  const existing = cart.find(p=>p.id===produto.id);
-  if(existing) existing.qtd += currentQty;
-  else cart.push({...produto,qtd:currentQty});
-  abrirCarrinho();
+document.addEventListener('click', (e) => {
+  // delegação: detecta clique no botão add-cart dentro da view do produto
+  if(e.target && e.target.classList && e.target.classList.contains('add-cart')){
+    const produto = currentProduct;
+    if(!produto) return;
+    const existing = cart.find(p=>p.id===produto.id);
+    if(existing) existing.qtd += currentQty;
+    else cart.push({...produto,qtd:currentQty});
+    abrirCarrinho();
+  }
 });
 
 // Finalizar compra
@@ -306,7 +342,8 @@ function compraRapida(){
 function buscar(){
   const termo = document.getElementById('searchInput').value.toLowerCase();
   const resultados = catalogo.filter(p=>{
-    return p.nome.toLowerCase().includes(termo) || p.tags.some(t=>t.includes(termo));
+    const tagsText = Array.isArray(p.tags) ? p.tags.join(' ') : (p.tags || '');
+    return (p.nome && p.nome.toLowerCase().includes(termo)) || (tagsText.toLowerCase().includes(termo));
   });
   if(resultados.length===0) alert('Nenhum produto encontrado.');
   else renderProdutos(resultados);
