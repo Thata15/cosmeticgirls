@@ -11,10 +11,10 @@
 }
 *{box-sizing:border-box;}
 body{margin:0; font-family:var(--mono); background:var(--bg); color:var(--text);}
-.wrap{max-width:1200px; margin:0 auto; padding:24px;} /* ajustado para 5 cards */
+.wrap{max-width:1800px; margin:0 auto; padding:24px;} /* ajustado para 5 cards */
 header{display:flex; align-items:center; gap:10px; margin-bottom:24px; position:relative;}
 header .logo{width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#ffb6c1,#ff69b4); display:grid; place-items:center; color:#fff; font-weight:200; font-size:22px;}
-header h1{font-size:24px; margin:0;}
+header h1{font-size:50px; margin:0;}
 header small{opacity:.7; font-size:0.85em;}
 
 /* Banner de marcas */
@@ -22,20 +22,20 @@ header small{opacity:.7; font-size:0.85em;}
   display:flex; gap:10px; margin:50px 10px; flex-wrap:wrap;
 }
 #brandBanner button{
-  padding:8px 14px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;
+  padding:14px 60px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;
 }
 #brandBanner button:hover{opacity:0.9; transform:translateY(-2px);}
 
 /* Botões externos */
 #backCatalog{
-  position:absolute; left:-100px; top:10px; padding:8px 12px; border:none; border-radius:12px;
+  position:absolute; left:-55px; top:10px; padding:8px 12px; border:none; border-radius:12px;
   background:var(--accent); color:#fff; cursor:pointer; display:none;
 }
-#backCatalog:hover{opacity:0.9; transform:translateY(-2px);}
+#backCatalog:hover{opacity:0.9; transform:translateY(-20px);}
 
 #cartButton{
-  position:absolute; right:0; top:10px; padding:8px 12px; border:none; border-radius:12px;
-  background:var(--accent2); color:#fff; cursor:pointer; font-size:18px;
+  position:absolute; right:0; top:50px; padding:8px 12px; border:none; border-radius:12px;
+  background:var(--accent2); color:#fff; cursor:pointer; font-size:25px;
 }
 #cartButton:hover{opacity:0.9; transform:translateY(-2px);}
 
@@ -119,8 +119,8 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
   <header>
     <button id="backCatalog" onclick="voltarCatalogo()">←</button>
     <div class="logo">Ch</div>
-    <h1>Cachos Divino <small>— Enrolou, Brlhou!</small></h1>
-    <button id="cartButton" onclick="abrirCarrinho()">🛒</button>
+    <h1>Cachos Divinos <small>— Enrolou, Brlhou!</small></h1>
+    <button id="cartButton" onclick="abrirCarrinho()">🛒Sacola</button>
   </header>
 
   <!-- Banner de marcas -->
@@ -131,6 +131,9 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
     <button onclick="filtrarPorMarca('salon line')">Salon Line</button>
     <button onclick="filtrarPorMarca('kolene')">Kolene</button>
     <button onclick="filtrarPorMarca('novex')">Novex</button>
+    <button onclick="filtrarPorMarca('lola')">Lola</button>
+    <button onclick="filtrarPorMarca('pentes')">Pentes</button>
+    <button onclick="filtrarPorMarca('acessórios')">Acessórios</button>
   </div>
 
   <!-- Visão do produto individual -->
@@ -181,13 +184,13 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 
 <script>
 const catalogo = [
-  {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['seda','sem-sulfato'], desc:'Descrição completa do produto.', images:['123.png','123a.png']},
-  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['skala'], desc:'Descrição completa do produto.', images:['1234.png','1234a.png']},
-  {id:'P003', nome:'Shampoo-Elseve', categoria:'shampoo', preco:72.9, tags:['salon line'], desc:'Descrição completa do produto.', images:['12345.png']},
-  {id:'P004', nome:'Condicionador Novex', categoria:'condicionador', preco:68.0, tags:['novex'], desc:'Descrição completa do produto.', images:['123456.png']},
+  {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['Salon line','sem-sulfato'], desc:'Descrição completa do produto.', images:['123.png','123a.png']},
+  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['Salon line'], desc:'Descrição completa do produto.', images:['1234.png','1234a.png']},
+  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Shampoo e Condicionador Litrão Salon Line', categoria:'shampoo', preco:72.9, tags:['salon line'], desc:'Descrição completa do produto.', images:['12345.png']},
+  {id:'P004', nome:'Condicionador Novex', categoria:'condicionador', preco:68.0, tags:['Salon line'], desc:'Descrição completa do produto.', images:['123456.png']},
   {id:'P005', nome:'Máscara Elseve', categoria:'máscara', preco:55.0, tags:['elseve'], desc:'Descrição completa do produto.', images:['1234567.png']},
-  {id:'P006', nome:'Creme Kolene', categoria:'creme', preco:60.0, tags:['kolene'], desc:'Descrição completa do produto.', images:['12345678.png']},
-  {id:'P007', nome:'Creme para Pentear Seda Cachos Definidos e Hidratados', categoria:'creme', preco:10.0, tags:['Seda'], desc:'Descrição completa do produto.', images:['12345678.png','12345678a.png']},
+  {id:'P006', nome:'Creme Kolene', categoria:'creme', preco:60.0, tags:['salon line'], desc:'Descrição completa do produto.', images:['12345678.png']},
+  {id:'P007', nome:'Creme para Pentear Seda Cachos Definidos e Hidratados', categoria:'creme', preco:10.0, tags:['Seda'], desc:'Descrição completa do produto.', images:['123456789.png','123456789a.png']},
   /* você pode adicionar mais produtos aqui para ver a grade preenchida */
 ];
 
