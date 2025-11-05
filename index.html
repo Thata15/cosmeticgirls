@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Loja Cacheia+ — Feminina & Interativa</title>
+<title>Cachos Divinos — Enrolou, Brilhou!</title>
 <style>
 :root{
   --bg:#fff0f5; --panel:#ffe4f0; --muted:#d1b0c5; --text: #000; --accent:#ffb6c1; --accent2:#ff69b4; --danger:#ff7b72;
@@ -12,10 +12,26 @@
 *{box-sizing:border-box;}
 body{margin:0; font-family:var(--mono); background:var(--bg); color:var(--text);}
 .wrap{max-width:1800px; margin:0 auto; padding:24px;} /* ajustado para 5 cards */
-header{display:flex; align-items:center; gap:10px; margin-bottom:24px; position:relative;}
+header{display:flex; align-items:center; gap:10px; margin-bottom:24px; position:relative; flex-direction:column;}
 header .logo{width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#ffb6c1,#ff69b4); display:grid; place-items:center; color:#fff; font-weight:200; font-size:22px;}
 header h1{font-size:50px; margin:0;}
-header small{opacity:.7; font-size:0.85em;}
+header small{opacity:.7; font-size:0.70em;}
+
+/* === Banner no topo do cabeçalho === */
+.top-banner {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.top-banner__img {
+  width: 100%;
+  max-height: 500px;        /* altura máxima do banner */
+  object-fit: cover;        /* cobre todo o espaço */
+  display: block;
+  border-radius: 12px;
+}
 
 /* Banner de marcas */
 #brandBanner{
@@ -50,9 +66,10 @@ header small{opacity:.7; font-size:0.85em;}
 @media(min-width:600px){ .grid{grid-template-columns:repeat(2,1fr);} }
 @media(min-width:900px){ .grid{grid-template-columns:repeat(5,1fr);} }
 
+/* >>> aq mexe com a altura e largura dos produtos exibidos <<< */
 .card{background:var(--panel); border-radius:16px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform .2s;}
 .card:hover{transform:translateY(-4px);}
-.card img{width:100%; height:160px; object-fit:cover; border-radius:18px;}
+.card img{width:100%; height:315px; object-fit:cover; border-radius:18px;}
 .card-content{width:100%; text-align:center; margin-top:8px;}
 .card-content h4{margin:0 0 6px 0; font-size:1.02em;}
 .card-content .dim{opacity:.75; font-size:0.85em;}
@@ -117,6 +134,11 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 <body>
 <div class="wrap">
   <header>
+    <!-- 🖼️ Banner no topo -->
+    <div class="top-banner">
+      <img src="banner.png" alt="Banner promocional Cachos Divinos" class="top-banner__img">
+    </div>
+
     <button id="backCatalog" onclick="voltarCatalogo()">←</button>
     <div class="logo">Ch</div>
     <h1>Cachos Divinos <small>— Enrolou, Brlhou!</small></h1>
@@ -160,7 +182,7 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 
   <!-- Barra de busca -->
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Buscar produtos ou tags...">
+    <input type="text" id="searchInput" placeholder="Buscar produtos...">
     <button onclick="buscar()">Pesquisar</button>
   </div>
 
@@ -184,21 +206,22 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 
 <script>
 const catalogo = [
-  {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['Salon line','sem-sulfato'], desc:'Descrição completa do produto.', images:['123.png','123a.png']},
-  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['Salon line'], desc:'Descrição completa do produto.', images:['1234.png','1234a.png']},
-  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Shampoo e Condicionador Litrão Salon Line', categoria:'shampoo', preco:72.9, tags:['salon line'], desc:'Descrição completa do produto.', images:['12345.png']},
-  {id:'P004', nome:'Condicionador Novex', categoria:'condicionador', preco:68.0, tags:['Salon line'], desc:'Descrição completa do produto.', images:['123456.png']},
-  {id:'P005', nome:'Máscara Elseve', categoria:'máscara', preco:55.0, tags:['elseve'], desc:'Descrição completa do produto.', images:['1234567.png']},
-  {id:'P006', nome:'Creme Kolene', categoria:'creme', preco:60.0, tags:['salon line'], desc:'Descrição completa do produto.', images:['12345678.png']},
-  {id:'P007', nome:'Creme para Pentear Seda Cachos Definidos e Hidratados', categoria:'creme', preco:10.0, tags:['Seda'], desc:'Descrição completa do produto.', images:['123456789.png','123456789a.png']},
-  /* você pode adicionar mais produtos aqui para ver a grade preenchida */
+  {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['Salon line','sem-sulfato'], desc:'Descrição completa do produto.', images:['1.png','1a.png','1b.png','1c.png']},
+  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['Salon line'], desc:'Descrição completa do produto.', images:['2.png','2a.png','2b.png','2c.png']},
+  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Shampoo e Condicionador Litrão Salon Line', categoria:'shampoo', preco:72.9, tags:['salon line'], desc:'Descrição completa do produto.', images:['3.png','3a.png']},
+  {id:'P004', nome:'Condicionador Novex', categoria:'condicionador', preco:68.0, tags:['Salon line'], desc:'Descrição completa do produto.', images:['4.png']},
+  {id:'P005', nome:'Máscara Elseve', categoria:'máscara', preco:55.0, tags:['elseve'], desc:'Descrição completa do produto.', images:['5.png']},
+  {id:'P006', nome:'Kit Completo SOS Cachos De Repente Pronta!', categoria:'creme', preco:160.20, tags:['salon line'], desc:'Descrição completa do produto.', images:['6.png']},
+  {id:'P007', nome:'Creme para Pentear Seda Cachos Definidos e Hidratados', categoria:'creme', preco:10.0, tags:['Seda'], desc:'Descrição completa do produto.', images:['7.png','7a.png']},
+ {id:'P008', nome:'Super Combo Hidratação e Brilho', categoria:'creme', preco:74.60, tags:['Kolene'], desc:'Descrição completa do produto.', images:['8.png']},
+ {id:'P009', nome:'Kit Tratamento SOS Cachos Coco com Shampoo e Condicionador + Creme para Pentear + Ativador de Cachos', categoria:'creme', preco:60.35, tags:['Salon line'], desc:'Descrição completa do produto.', images:['9.png']},
+ {id:'P010', nome:'Divino Potão - 2 em 1 - Creme para Pentear + Creme Hidratante', categoria:'creme', preco:12.90, tags:['skala'], desc:'Descrição completa do produto.', images:['10.png']},
 ];
 
 let cart = [];
 let currentProduct = null;
 let currentQty = 1;
 
-// Renderiza produtos no grid
 function renderProdutos(lista){
   const grid = document.getElementById('productGrid');
   grid.innerHTML='';
@@ -216,40 +239,28 @@ function renderProdutos(lista){
     grid.appendChild(card);
   });
   document.getElementById('backCatalog').style.display='none';
-  // Mostrar grid caso esteja oculto (ex.: depois de ver produto)
   document.getElementById('productGrid').style.display = 'grid';
 }
 
-// Filtrar por marca (aceita tags como string ou array)
 function filtrarPorMarca(marca) {
-  console.log("Marca clicada:", marca);
-
   const resultados = catalogo.filter(p => {
-    if (!p.tags) return false; // se não existir tags, ignora
-
+    if (!p.tags) return false;
     if (Array.isArray(p.tags)) {
-      // se for array, verifica se algum item bate
       return p.tags.some(t => t.toLowerCase().trim() === marca.toLowerCase().trim());
     } else if (typeof p.tags === "string") {
-      // se for string simples
       return p.tags.toLowerCase().trim() === marca.toLowerCase().trim();
     }
     return false;
   });
-
-  console.log("Resultados encontrados:", resultados);
-
   renderProdutos(resultados);
   document.getElementById('backCatalog').style.display = 'inline-block';
 }
 
-// Voltar para catálogo geral
 function voltarCatalogo(){
   renderProdutos(catalogo);
   document.getElementById('backCatalog').style.display='none';
 }
 
-// Ver produto individual
 function verProduto(id){
   const produto = catalogo.find(p => p.id===id);
   if(!produto) return;
@@ -278,7 +289,6 @@ function verProduto(id){
   });
 }
 
-// Voltar para grid do catálogo
 function voltarGrid(){
   document.getElementById('productView').style.display='none';
   document.getElementById('productGrid').style.display='grid';
@@ -286,73 +296,58 @@ function voltarGrid(){
   document.getElementById('freteResult').textContent='';
 }
 
-// Calcular frete
 function calcularFrete(){
   const cep = document.getElementById('cep').value;
   if(cep.length>=8) document.getElementById('freteResult').textContent = "Frete: R$ 12,90 (3-5 dias úteis)";
   else document.getElementById('freteResult').textContent = "Digite um CEP válido.";
 }
 
-// Carrinho
 function abrirCarrinho(){
-  const cartContainer = document.getElementById('cartItems');
-  cartContainer.innerHTML='';
-  let subtotal = 0;
-  cart.forEach(item=>{
-    const div = document.createElement('div');
-    div.innerHTML = `<span>${item.nome} x ${item.qtd}</span> <span>R$ ${(item.preco*item.qtd).toFixed(2)}</span>`;
-    cartContainer.appendChild(div);
-    subtotal += item.preco*item.qtd;
-  });
-  document.getElementById('cartSubtotal').textContent = subtotal.toFixed(2);
-  document.getElementById('cartPopup').classList.add('show');
+  const cartContainer = document.getElementById('cartPopup');
+  cartContainer.classList.add('show');
+  atualizarCarrinho();
 }
 
 function fecharPopup(){
   document.getElementById('cartPopup').classList.remove('show');
 }
 
-// Adicionar ao carrinho
-document.addEventListener('click', (e) => {
-  // delegação: detecta clique no botão add-cart dentro da view do produto
-  if(e.target && e.target.classList && e.target.classList.contains('add-cart')){
-    const produto = currentProduct;
-    if(!produto) return;
-    const existing = cart.find(p=>p.id===produto.id);
-    if(existing) existing.qtd += currentQty;
-    else cart.push({...produto,qtd:currentQty});
-    abrirCarrinho();
-  }
-});
+function atualizarCarrinho(){
+  const items = document.getElementById('cartItems');
+  const subtotalEl = document.getElementById('cartSubtotal');
+  items.innerHTML='';
+  let subtotal=0;
+  cart.forEach(item=>{
+    subtotal+=item.preco*item.qtd;
+    const row=document.createElement('div');
+    row.innerHTML=`
+      <span>${item.nome} x${item.qtd}</span>
+      <strong>R$ ${(item.preco*item.qtd).toFixed(2)}</strong>
+    `;
+    items.appendChild(row);
+  });
+  subtotalEl.textContent=subtotal.toFixed(2);
+}
 
-// Finalizar compra
 function finalizarCompra(){
-  alert(`Compra finalizada!\nTotal: R$ ${cart.reduce((acc,i)=>acc+i.preco*i.qtd,0).toFixed(2)}`);
-  cart = [];
+  alert('Compra finalizada! Obrigado por escolher Cachos Divinos 💖');
+  cart=[];
   fecharPopup();
+  atualizarCarrinho();
 }
 
-// Compra rápida
-function compraRapida(){
-  const produtoNome = document.getElementById('productName').textContent;
-  const preco = document.getElementById('productPrice').textContent;
-  const numero = "5511999999999";
-  const mensagem = `Olá! Quero comprar o produto: ${produtoNome} pelo preço de ${preco}.`;
-  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, '_blank');
-}
-
-// Buscar
 function buscar(){
   const termo = document.getElementById('searchInput').value.toLowerCase();
-  const resultados = catalogo.filter(p=>{
-    const tagsText = Array.isArray(p.tags) ? p.tags.join(' ') : (p.tags || '');
-    return (p.nome && p.nome.toLowerCase().includes(termo)) || (tagsText.toLowerCase().includes(termo));
-  });
-  if(resultados.length===0) alert('Nenhum produto encontrado.');
-  else renderProdutos(resultados);
+  const resultados = catalogo.filter(p => p.nome.toLowerCase().includes(termo));
+  renderProdutos(resultados);
 }
 
-// Inicializa grid
+function compraRapida(){
+  if(!currentProduct) return;
+  cart.push({nome:currentProduct.nome, preco:currentProduct.preco, qtd:1});
+  abrirCarrinho();
+}
+
 renderProdutos(catalogo);
 </script>
 </body>
