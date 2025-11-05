@@ -11,26 +11,28 @@
 }
 *{box-sizing:border-box;}
 body{margin:0; font-family:var(--mono); background:var(--bg); color:var(--text);}
-.wrap{max-width:1800px; margin:0 auto; padding:24px;} /* ajustado para 5 cards */
+.wrap{max-width:1800px; margin:0 auto; padding:24px;}
 header{display:flex; align-items:center; gap:10px; margin-bottom:24px; position:relative; flex-direction:column;}
 header .logo{width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#ffb6c1,#ff69b4); display:grid; place-items:center; color:#fff; font-weight:200; font-size:22px;}
 header h1{font-size:50px; margin:0;}
 header small{opacity:.7; font-size:0.70em;}
 
-/* === Banner no topo do cabeçalho === */
+/* === Banner no topo do cabeçalho com parallax e slideshow === */
 .top-banner {
+  position: relative;
   width: 100%;
   overflow: hidden;
   border-radius: 12px;
   margin-bottom: 10px;
+  height: 400px;
 }
-
 .top-banner__img {
   width: 100%;
-  max-height: 500px;        /* altura máxima do banner */
-  object-fit: cover;        /* cobre todo o espaço */
+  height: 100%;
+  object-fit: cover;
   display: block;
   border-radius: 12px;
+  transition: transform 0.2s ease-out;
 }
 
 /* Banner de marcas */
@@ -62,7 +64,6 @@ header small{opacity:.7; font-size:0.70em;}
 
 /* >>> ALTERAÇÃO: 5 PRODUTOS POR FILEIRA EM TELAS LARGAS <<< */
 .grid{display:grid; grid-template-columns:1fr; gap:14px;}
-/* Ajuste responsivo: 2 colunas em tablet, 5 em telas maiores */
 @media(min-width:600px){ .grid{grid-template-columns:repeat(2,1fr);} }
 @media(min-width:900px){ .grid{grid-template-columns:repeat(5,1fr);} }
 
@@ -349,6 +350,27 @@ function compraRapida(){
 }
 
 renderProdutos(catalogo);
+
+/* === Banner Slideshow & Parallax === */
+const bannerImages = [
+  'banner.png',
+  'banner.png',
+  'banner.png'
+];
+
+let currentBannerIndex = 0;
+const bannerImgEl = document.querySelector('.top-banner__img');
+
+function trocarBanner() {
+  currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
+  bannerImgEl.src = bannerImages[currentBannerIndex];
+}
+setInterval(trocarBanner, 5000);
+
+window.addEventListener('scroll', () => {
+  const scrollPos = window.scrollY;
+  bannerImgEl.style.transform = `translateY(${scrollPos * 0.3}px)`;
+});
 </script>
 </body>
 </html>
