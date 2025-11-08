@@ -12,12 +12,26 @@
 *{box-sizing:border-box;}
 body{margin:0; font-family:var(--mono); background:var(--bg); color:var(--text);}
 .wrap{max-width:1800px; margin:0 auto; padding:24px;}
-header{display:flex; align-items:center; gap:10px; margin-bottom:24px; position:relative; flex-direction:column;}
-header .logo{width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg,#ffb6c1,#ff69b4); display:grid; place-items:center; color:#fff; font-weight:200; font-size:22px;}
+header{display:flex; align-items:flex-start; gap:10px; margin-bottom:24px; position:relative; flex-direction:column;}
+
+/* LOGO COM TEXTO AO LADO */
+header .logo-container {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+  align-self:flex-start; /* <<< move para esquerda */
+}
+header .logo-container img {
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  object-fit:cover;
+}
 header h1{font-size:50px; margin:0;}
 header small{opacity:.7; font-size:0.70em;}
 
-/* === Banner no topo do cabeçalho com parallax e slideshow === */
+/* Banner topo */
 .top-banner {
   position: relative;
   width: 100%;
@@ -35,12 +49,12 @@ header small{opacity:.7; font-size:0.70em;}
   transition: transform 0.1s ease-out;
 }
 
-/* Banner de marcas */
+/* Banner marcas */
 #brandBanner{
-  display:flex; gap:10px; margin:50px 10px; flex-wrap:wrap;
+  display:flex; gap:6px; margin:50px 7px; flex-wrap:wrap;
 }
 #brandBanner button{
-  padding:14px 60px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;
+  padding:10px 50px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;
 }
 #brandBanner button:hover{opacity:0.9; transform:translateY(-2px);}
 
@@ -50,27 +64,24 @@ header small{opacity:.7; font-size:0.70em;}
   background:var(--accent); color:#fff; cursor:pointer; display:none;
 }
 #backCatalog:hover{opacity:0.9; transform:translateY(-20px);}
-
 #cartButton{
-  position:absolute; right:0; top:50px; padding:8px 12px; border:none; border-radius:12px;
+  position:absolute; right:0; top:435px; padding:8px 12px; border:none; border-radius:12px;
   background:var(--accent2); color:#fff; cursor:pointer; font-size:25px;
 }
 #cartButton:hover{opacity:0.9; transform:translateY(-2px);}
 
 /* Barra de busca */
-.search-bar{margin-bottom:30px; display:flex; gap:8px;}
+.search-bar{margin-bottom:30px; display:flex; gap:5px;}
 .search-bar input{flex:1; padding:8px 20px; border-radius:12px; border:2px solid var(--muted); background:#fff0f5; color:var(--text);}
 .search-bar button{padding:8px 14px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;}
 
-/* === ALTERAÇÃO: 7 PRODUTOS POR LINHA SEMPRE === */
+/* Grid produtos */
 .grid{
   display:grid;
-  grid-template-columns: repeat(7, 1fr); /* <<< ALTERAÇÃO */
+  grid-template-columns: repeat(8, 1fr);
   gap: 14px;
   justify-items:center;
 }
-
-/* === ALTERAÇÃO: CAIXAS MENORES / IMAGENS INTEIRAS === */
 .card{
   background:var(--panel);
   border-radius:16px;
@@ -80,14 +91,14 @@ header small{opacity:.7; font-size:0.70em;}
   align-items:center;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
   transition:transform .2s;
-  width:150px;        /* <<< ALTERAÇÃO */
-  height:230px;       /* <<< ALTERAÇÃO */
+  width:150px;
+  height:230px;
 }
 .card:hover{transform:translateY(-4px);}
 .card img{
   width:100%;
-  height:140px;        /* <<< ALTERAÇÃO */
-  object-fit:contain;  /* <<< ALTERAÇÃO: imagem aparece inteira */
+  height:140px;
+  object-fit:contain;
   border-radius:12px;
 }
 .card-content{width:100%; text-align:center; margin-top:6px;}
@@ -96,54 +107,20 @@ header small{opacity:.7; font-size:0.70em;}
 .price-btn{margin-top:4px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:0.7em; padding:4px 6px; cursor:pointer; opacity:0.95; transition:opacity .2s;}
 .price-btn:hover{opacity:1;}
 
-/* Produto individual */
-#productView{display:none; margin-top:20px;}
-#productView .main-image img{width:100%;max-height:400px;object-fit:contain;border-radius:16px;margin-bottom:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-.product-images{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
-.product-images img{width:80px;height:80px;object-fit:cover;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:border .2s;}
-.product-images img.selected{border-color:var(--accent2);}
-h1#productName{margin:10px 0;font-size:1.6em;}
-p#productDescription{font-size:1em;opacity:0.85;margin-bottom:10px;}
-.price{font-size:2em;color:var(--accent2); font-weight:bold;margin:15px 0;}
-.buttons{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
-button.add-cart{background:var(--accent2);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;}
-button.add-cart:hover{transform:translateY(-2px);opacity:0.9;}
-button.quick-buy{background:#fff;border:2px solid var(--accent2);color:var(--accent2);padding:10px 14px;border-radius:10px;cursor:pointer;}
-button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
-.shipping{margin-top:20px;padding:15px;background:var(--bg);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.06);}
-.shipping input{padding:8px;border-radius:8px;border:1px solid var(--muted);width:150px;margin-right:10px;}
-
-/* Pop-up sacola */
-#cartPopup {
-  position: fixed;
-  top: 20%;
-  left: -350px;
-  width: 300px;
-  background: var(--panel);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  border-radius: 12px;
-  padding: 16px;
-  transition: left 0.3s ease;
-  z-index: 1000;
-  font-family: var(--mono);
+/* Responsividade */
+@media(max-width:1024px){
+  .grid{grid-template-columns: repeat(4, 1fr);}
+  header h1{font-size:36px;}
 }
-#cartPopup.show { left: 20px; }
-#cartPopup .popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+@media(max-width:768px){
+  .grid{grid-template-columns: repeat(3, 1fr);}
+  header h1{font-size:28px;}
 }
-#cartPopup .popup-header h4 { margin:0; font-size:1em; }
-#cartPopup .popup-header button { background:none; border:none; font-size:1.2em; cursor:pointer; }
-#cartPopup .popup-body { display:flex; gap:10px; margin-bottom:10px; flex-direction:column; max-height:300px; overflow:auto; }
-#cartPopup .popup-body div{display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;}
-#cartPopup .popup-actions button { width:100%; padding:8px; margin-bottom:5px; border:none; border-radius:8px; cursor:pointer; }
-#cartPopup .popup-actions .continue { background:var(--accent); color:#fff; }
-#cartPopup .popup-actions .checkout { background:var(--accent2); color:#fff; }
-
 @media(max-width:480px){
   .wrap{padding:12px;}
+  .grid{grid-template-columns: repeat(2, 1fr);}
+  header h1{font-size:22px;}
+  #cartButton{top:10px; right:10px;}
 }
 </style>
 </head>
@@ -153,10 +130,11 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
     <div class="top-banner">
       <img src="banner.png" alt="Banner promocional Cachos Divinos" class="top-banner__img">
     </div>
-
     <button id="backCatalog" onclick="voltarCatalogo()">←</button>
-    <div class="logo">Ch</div>
-    <h1>Cachos Divinos <small>— Enrolou, Brlhou!</small></h1>
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo Cachos Divinos">
+      <h1>Cachos Divinos <small>— Enrolou, Brilhou!</small></h1>
+    </div>
     <button id="cartButton" onclick="abrirCarrinho()">🛒Sacola</button>
   </header>
 
@@ -172,73 +150,32 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
     <button onclick="filtrarPorMarca('acessórios')">Acessórios</button>
   </div>
 
-  <!-- Produto individual -->
-  <div id="productView">
-    <button class="back-btn" onclick="voltarGrid()">← Voltar</button>
-    <div class="main-image">
-      <img id="mainImage" src="" alt="Produto">
-    </div>
-    <div class="product-images" id="thumbnails"></div>
-    <h1 id="productName"></h1>
-    <p id="productDescription"></p>
-    <p class="price" id="productPrice"></p>
-    <div class="buttons">
-      <button class="add-cart">Adicionar à sacola</button>
-      <button class="quick-buy" onclick="compraRapida()">Compra rápida</button>
-    </div>
-    <div class="shipping">
-      <label for="cep">Calcular frete (CEP):</label><br>
-      <input type="text" id="cep" placeholder="Digite seu CEP">
-      <button onclick="calcularFrete()">Calcular</button>
-      <p id="freteResult"></p>
-    </div>
-  </div>
-
-  <!-- Barra de busca -->
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Buscar produtos...">
     <button onclick="buscar()">Pesquisar</button>
   </div>
 
-  <!-- Grid de produtos -->
   <div class="grid" id="productGrid"></div>
 </div>
 
-<!-- Pop-up sacola -->
-<div id="cartPopup">
-  <div class="popup-header">
-    <h4>Sacola</h4>
-    <button onclick="fecharPopup()">×</button>
-  </div>
-  <div class="popup-body" id="cartItems"></div>
-  <div class="subtotal">Subtotal: R$ <span id="cartSubtotal">0.00</span></div>
-  <div class="popup-actions">
-    <button class="continue" onclick="fecharPopup()">Continuar comprando</button>
-    <button class="checkout" onclick="finalizarCompra()">Finalizar compra</button>
-  </div>
-</div>
-
 <script>
+// Catálogo de produtos
 const catalogo = [
-  {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['Salon line'], images:['1.png','1a.png','1b.png','1c.png']},
-  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['Salon line'], images:['2.png','2a.png','2b.png','2c.png']},
-  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Litrão', categoria:'shampoo', preco:72.9, tags:['salon line'], images:['3.png','3a.png']},
+  {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['Salon line'], images:['1.png']},
+  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['Salon line'], images:['2.png']},
+  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Litrão', categoria:'shampoo', preco:72.9, tags:['salon line'], images:['3.png']},
   {id:'P004', nome:'Condicionador Novex', categoria:'condicionador', preco:68.0, tags:['Salon line'], images:['4.png']},
   {id:'P005', nome:'Máscara Elseve', categoria:'máscara', preco:55.0, tags:['elseve'], images:['5.png']},
   {id:'P006', nome:'Kit Completo SOS Cachos', categoria:'creme', preco:160.20, tags:['salon line'], images:['6.png']},
-  {id:'P007', nome:'Kit Danos Vorazes - Shampoo + Booster + Leave-in + Óleo', categoria:'creme', preco:129.22, tags:['lola'], images:['11.png','11a.png','11b.png']},
-  {id:'P008', nome:'Super Combo Hidratação e Brilho', categoria:'creme', preco:74.60, tags:['Kolene'], desc:'Descrição completa do produto.', images:['8.png']},
-  {id:'P009', nome:'Kit Tratamento SOS Cachos Coco com Shampoo e Condicionador + Creme para Pentear + Ativador de Cachos', categoria:'creme', preco:60.35, tags:['Salon line'], desc:'Descrição completa do produto.', images:['9.png']},
-  {id:'P010', nome:'Divino Potão - 2 em 1 - Creme para Pentear + Creme Hidratante', categoria:'creme', preco:12.90, tags:['skala'], desc:'Descrição completa do produto.', images:['10.png']},
-  {id:'P011', nome:'Kit Morte Súbita - Linha Completa', categoria:'creme', preco:167.65, tags:['lola'], images:['12.png']},
-  {id:'P012', nome:'Kit Rapunzel – Linha Completa', categoria:'creme', preco:164.22, tags:['lola'], images:['13.png']},
+  {id:'P007', nome:'Kit Danos Vorazes - Shampoo + Booster + Leave-in + Óleo', categoria:'creme', preco:129.22, tags:['lola'], images:['11.png']},
+  {id:'P008', nome:'Super Combo Hidratação e Brilho', categoria:'creme', preco:74.60, tags:['Kolene'], images:['8.png']},
+  {id:'P010', nome:'Divino Potão - 2 em 1 - Creme para Pentear + Creme Hidratante', categoria:'creme', preco:12.90, tags:['skala'], desc:'Descrição completa do produto.', images:['10.png']}, 
+  {id:'P011', nome:'Kit Morte Súbita - Linha Completa', categoria:'creme', preco:167.65, tags:['lola'], images:['12.png']}, 
+  {id:'P012', nome:'Kit Rapunzel – Linha Completa', categoria:'creme', preco:164.22, tags:['lola'], images:['13.png']}, 
   {id:'P013', nome:'Kit Meu Cacho Minha Vida - Linha Completa', categoria:'creme', preco:173.70, tags:['lola'], images:['14.png']}
-];
+ ];
 
-let cart = [];
-let currentProduct = null;
-let currentQty = 1;
-
+// Renderiza produtos
 function renderProdutos(lista){
   const grid = document.getElementById('productGrid');
   grid.innerHTML='';
@@ -250,150 +187,14 @@ function renderProdutos(lista){
       <div class="card-content">
         <h4>${p.nome}</h4>
         <div class="dim">${p.categoria}</div>
-        <button class="price-btn" onclick="verProduto('${p.id}')">Ver preço</button>
+        <button class="price-btn">Ver preço</button>
       </div>
     `;
     grid.appendChild(card);
   });
-  document.getElementById('backCatalog').style.display='none';
-  document.getElementById('productGrid').style.display = 'grid';
-}
-
-function filtrarPorMarca(marca) {
-  const resultados = catalogo.filter(p => {
-    if (!p.tags) return false;
-    if (Array.isArray(p.tags)) {
-      return p.tags.some(t => t.toLowerCase().trim() === marca.toLowerCase().trim());
-    } else if (typeof p.tags === "string") {
-      return p.tags.toLowerCase().trim() === marca.toLowerCase().trim();
-    }
-    return false;
-  });
-  renderProdutos(resultados);
-  document.getElementById('backCatalog').style.display = 'inline-block';
-}
-
-function voltarCatalogo(){
-  renderProdutos(catalogo);
-  document.getElementById('backCatalog').style.display='none';
-}
-
-/* ✅ FUNÇÃO VER PREÇO (a mesma que você pediu para copiar) */
-function verProduto(id){
-  const produto = catalogo.find(p => p.id===id);
-  if(!produto) return;
-  currentProduct = produto;
-  currentQty = 1;
-
-  document.getElementById('productGrid').style.display='none';
-  document.getElementById('productView').style.display='block';
-  document.getElementById('productName').textContent = produto.nome;
-  document.getElementById('productDescription').textContent = produto.desc;
-  document.getElementById('productPrice').textContent = `R$ ${produto.preco.toFixed(2)}`;
-  document.getElementById('mainImage').src = produto.images[0];
-
-  const thumbnails = document.getElementById('thumbnails');
-  thumbnails.innerHTML='';
-
-  produto.images.forEach((imgSrc,index)=>{
-    const img = document.createElement('img');
-    img.src = imgSrc;
-    if(index===0) img.classList.add('selected');
-    img.addEventListener('click',()=>{
-      document.getElementById('mainImage').src = imgSrc;
-      document.querySelectorAll('.product-images img').forEach(i=>i.classList.remove('selected'));
-      img.classList.add('selected');
-    });
-    thumbnails.appendChild(img);
-  });
-
-  document.querySelector('.add-cart').onclick = function(){
-    cart.push({nome:produto.nome, preco:produto.preco, qtd:1});
-    abrirCarrinho();
-  }
-}
-
-function voltarGrid(){
-  document.getElementById('productView').style.display='none';
-  document.getElementById('productGrid').style.display='grid';
-  document.getElementById('cep').value='';
-  document.getElementById('freteResult').textContent='';
-}
-
-function calcularFrete(){
-  const cep = document.getElementById('cep').value;
-  if(cep.length>=8) document.getElementById('freteResult').textContent = "Frete: R$ 12,90 (3-5 dias úteis)";
-  else document.getElementById('freteResult').textContent = "Digite um CEP válido.";
-}
-
-function abrirCarrinho(){
-  const cartContainer = document.getElementById('cartPopup');
-  cartContainer.classList.add('show');
-  atualizarCarrinho();
-}
-
-function fecharPopup(){
-  document.getElementById('cartPopup').classList.remove('show');
-}
-
-function atualizarCarrinho(){
-  const items = document.getElementById('cartItems');
-  const subtotalEl = document.getElementById('cartSubtotal');
-  items.innerHTML='';
-  let subtotal=0;
-  cart.forEach(item=>{
-    subtotal+=item.preco*item.qtd;
-    const row=document.createElement('div');
-    row.innerHTML=`
-      <span>${item.nome} x${item.qtd}</span>
-      <strong>R$ ${(item.preco*item.qtd).toFixed(2)}</strong>
-    `;
-    items.appendChild(row);
-  });
-  subtotalEl.textContent=subtotal.toFixed(2);
-}
-
-function finalizarCompra(){
-  alert('Compra finalizada! Obrigado por escolher Cachos Divinos 💖');
-  cart=[];
-  fecharPopup();
-  atualizarCarrinho();
-}
-
-function buscar(){
-  const termo = document.getElementById('searchInput').value.toLowerCase();
-  const resultados = catalogo.filter(p => p.nome.toLowerCase().includes(termo));
-  renderProdutos(resultados);
-}
-
-function compraRapida(){
-  if(!currentProduct) return;
-  cart.push({nome:currentProduct.nome, preco:currentProduct.preco, qtd:1});
-  abrirCarrinho();
 }
 
 renderProdutos(catalogo);
-
-/* === Banner Slideshow & Parallax === */
-const bannerImages = [
-  'banner1.png',
-  'banner2.png',
-  'banner3.png'
-];
-
-let currentBannerIndex = 0;
-const bannerImgEl = document.querySelector('.top-banner__img');
-
-function trocarBanner() {
-  currentBannerIndex = (currentBannerIndex + 1) % bannerImages.length;
-  bannerImgEl.src = bannerImages[currentBannerIndex];
-}
-setInterval(trocarBanner, 5000);
-
-window.addEventListener('scroll', () => {
-  const scrollPos = window.scrollY;
-  bannerImgEl.style.transform = `translateY(${scrollPos * 0.3}px)`;
-});
 </script>
 </body>
 </html>
