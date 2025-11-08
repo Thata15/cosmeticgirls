@@ -57,24 +57,43 @@ header small{opacity:.7; font-size:0.70em;}
 }
 #cartButton:hover{opacity:0.9; transform:translateY(-2px);}
 
-/* Search & Grid */
+/* Barra de busca */
 .search-bar{margin-bottom:30px; display:flex; gap:8px;}
 .search-bar input{flex:1; padding:8px 20px; border-radius:12px; border:2px solid var(--muted); background:#fff0f5; color:var(--text);}
 .search-bar button{padding:8px 14px; border:none; border-radius:12px; background:var(--accent2); color:#fff; cursor:pointer; font-weight:bold;}
 
-/* >>> ALTERAÇÃO DE GRID: 5 por fileira <<< */
-.grid{display:grid; grid-template-columns:1fr; gap:14px;}
-@media(min-width:600px){ .grid{grid-template-columns:repeat(2,1fr);} }
-@media(min-width:900px){ .grid{grid-template-columns:repeat(5,1fr);} }
+/* === ALTERAÇÃO: 7 PRODUTOS POR LINHA SEMPRE === */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(7, 1fr); /* <<< ALTERAÇÃO */
+  gap: 14px;
+  justify-items:center;
+}
 
-/* Cartões dos produtos */
-.card{background:var(--panel); border-radius:16px; padding:12px; display:flex; flex-direction:column; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform .2s;}
-.card:hover{transform:translateY(-4px);}`
-.card img{width:100%; height:315px; object-fit:cover; border-radius:18px;}
-.card-content{width:100%; text-align:center; margin-top:8px;}
-.card-content h4{margin:0 0 6px 0; font-size:1.02em;}
-.card-content .dim{opacity:.75; font-size:0.85em;}
-.price-btn{margin-top:6px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:0.8em; padding:6px 8px; cursor:pointer; opacity:0.95; transition:opacity .2s;}
+/* === ALTERAÇÃO: CAIXAS MENORES / IMAGENS INTEIRAS === */
+.card{
+  background:var(--panel);
+  border-radius:16px;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  transition:transform .2s;
+  width:150px;        /* <<< ALTERAÇÃO */
+  height:230px;       /* <<< ALTERAÇÃO */
+}
+.card:hover{transform:translateY(-4px);}
+.card img{
+  width:100%;
+  height:140px;        /* <<< ALTERAÇÃO */
+  object-fit:contain;  /* <<< ALTERAÇÃO: imagem aparece inteira */
+  border-radius:12px;
+}
+.card-content{width:100%; text-align:center; margin-top:6px;}
+.card-content h4{margin:0 0 4px 0; font-size:0.85em;}
+.card-content .dim{opacity:.75; font-size:0.70em;}
+.price-btn{margin-top:4px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:0.7em; padding:4px 6px; cursor:pointer; opacity:0.95; transition:opacity .2s;}
 .price-btn:hover{opacity:1;}
 
 /* Produto individual */
@@ -125,16 +144,12 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
 
 @media(max-width:480px){
   .wrap{padding:12px;}
-  .card img{height:140px;}
-  .search-bar input{padding:8px 10px;}
-  header h1{font-size:18px;}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <!-- 🖼️ Banner no topo -->
     <div class="top-banner">
       <img src="banner.png" alt="Banner promocional Cachos Divinos" class="top-banner__img">
     </div>
@@ -145,7 +160,6 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
     <button id="cartButton" onclick="abrirCarrinho()">🛒Sacola</button>
   </header>
 
-  <!-- Banner de marcas -->
   <div id="brandBanner">
     <button onclick="filtrarPorMarca('seda')">Seda</button>
     <button onclick="filtrarPorMarca('skala')">Skala</button>
@@ -158,7 +172,7 @@ button.quick-buy:hover{transform:translateY(-2px);opacity:0.9;}
     <button onclick="filtrarPorMarca('acessórios')">Acessórios</button>
   </div>
 
-  <!-- Visão do produto individual -->
+  <!-- Produto individual -->
   <div id="productView">
     <button class="back-btn" onclick="voltarGrid()">← Voltar</button>
     <div class="main-image">
@@ -219,13 +233,11 @@ const catalogo = [
   {id:'P011', nome:'Kit Morte Súbita - Linha Completa', categoria:'creme', preco:167.65, tags:['lola'], images:['12.png']},
   {id:'P012', nome:'Kit Rapunzel – Linha Completa', categoria:'creme', preco:164.22, tags:['lola'], images:['13.png']},
   {id:'P013', nome:'Kit Meu Cacho Minha Vida - Linha Completa', categoria:'creme', preco:173.70, tags:['lola'], images:['14.png']}
-];  // ✅ ✅ ✅ AQUI ESTÁ A CORREÇÃO — FECHAMOS O ARRAY CORRETAMENTE
+];
 
 let cart = [];
 let currentProduct = null;
 let currentQty = 1;
-
-// (todo o resto do seu JS permanece igual ⬇️)
 
 function renderProdutos(lista){
   const grid = document.getElementById('productGrid');
@@ -247,10 +259,6 @@ function renderProdutos(lista){
   document.getElementById('productGrid').style.display = 'grid';
 }
 
-// ➤ restante do script continua exatamente igual...
-
-// *** nada foi alterado aqui para baixo ***
-
 function filtrarPorMarca(marca) {
   const resultados = catalogo.filter(p => {
     if (!p.tags) return false;
@@ -270,7 +278,7 @@ function voltarCatalogo(){
   document.getElementById('backCatalog').style.display='none';
 }
 
-/* ✅ FUNÇÃO VER PREÇO (copiada do código 1 e aplicada aqui) */
+/* ✅ FUNÇÃO VER PREÇO (a mesma que você pediu para copiar) */
 function verProduto(id){
   const produto = catalogo.find(p => p.id===id);
   if(!produto) return;
@@ -299,7 +307,6 @@ function verProduto(id){
     thumbnails.appendChild(img);
   });
 
-  // ✅ trecho que adiciona ao carrinho como no código 1
   document.querySelector('.add-cart').onclick = function(){
     cart.push({nome:produto.nome, preco:produto.preco, qtd:1});
     abrirCarrinho();
