@@ -20,7 +20,7 @@ header .logo-container {
   align-items:center;
   gap:10px;
   margin-bottom:10px;
-  align-self:flex-start; /* <<< move para esquerda */
+  align-self:flex-start; /* move para esquerda */
 }
 header .logo-container img {
   width:50px;
@@ -58,15 +58,21 @@ header small{opacity:.7; font-size:0.70em;}
 }
 #brandBanner button:hover{opacity:0.9; transform:translateY(-2px);}
 
-/* Botões externos */
+/* Botão voltar catálogo */
 #backCatalog{
-  position:absolute; left:-55px; top:10px; padding:8px 12px; border:none; border-radius:12px;
-  background:var(--accent); color:#fff; cursor:pointer; display:none;
+  position:absolute; left:-15px; top:500px; padding:8px 12px; border:none; border-radius:12px;
+  background:var(--accent); color:#fff; cursor:pointer; display:none; z-index:10;
 }
 #backCatalog:hover{opacity:0.9; transform:translateY(-20px);}
+
+/* Botão sacola abaixo do banner, responsivo */
 #cartButton{
-  position:absolute; right:0; top:435px; padding:8px 12px; border:none; border-radius:12px;
+  position:absolute;
+  right:10px;
+  top:calc(400px + 10px); /* abaixo do banner */
+  padding:8px 12px; border:none; border-radius:12px;
   background:var(--accent2); color:#fff; cursor:pointer; font-size:25px;
+  z-index:10;
 }
 #cartButton:hover{opacity:0.9; transform:translateY(-2px);}
 
@@ -111,16 +117,18 @@ header small{opacity:.7; font-size:0.70em;}
 @media(max-width:1024px){
   .grid{grid-template-columns: repeat(4, 1fr);}
   header h1{font-size:36px;}
+  #cartButton{top:calc(400px + 10px);}
 }
 @media(max-width:768px){
   .grid{grid-template-columns: repeat(3, 1fr);}
   header h1{font-size:28px;}
+  #cartButton{top:calc(400px + 10px);}
 }
 @media(max-width:480px){
   .wrap{padding:12px;}
   .grid{grid-template-columns: repeat(2, 1fr);}
   header h1{font-size:22px;}
-  #cartButton{top:10px; right:10px;}
+  #cartButton{top:calc(400px + 5px); font-size:20px; right:5px;}
 }
 </style>
 </head>
@@ -169,11 +177,11 @@ const catalogo = [
   {id:'P006', nome:'Kit Completo SOS Cachos', categoria:'creme', preco:160.20, tags:['salon line'], images:['6.png']},
   {id:'P007', nome:'Kit Danos Vorazes - Shampoo + Booster + Leave-in + Óleo', categoria:'creme', preco:129.22, tags:['lola'], images:['11.png']},
   {id:'P008', nome:'Super Combo Hidratação e Brilho', categoria:'creme', preco:74.60, tags:['Kolene'], images:['8.png']},
-  {id:'P010', nome:'Divino Potão - 2 em 1 - Creme para Pentear + Creme Hidratante', categoria:'creme', preco:12.90, tags:['skala'], desc:'Descrição completa do produto.', images:['10.png']}, 
-  {id:'P011', nome:'Kit Morte Súbita - Linha Completa', categoria:'creme', preco:167.65, tags:['lola'], images:['12.png']}, 
-  {id:'P012', nome:'Kit Rapunzel – Linha Completa', categoria:'creme', preco:164.22, tags:['lola'], images:['13.png']}, 
+  {id:'P010', nome:'Divino Potão - 2 em 1 - Creme para Pentear + Creme Hidratante', categoria:'creme', preco:12.90, tags:['skala'], images:['10.png']},
+  {id:'P011', nome:'Kit Morte Súbita - Linha Completa', categoria:'creme', preco:167.65, tags:['lola'], images:['12.png']},
+  {id:'P012', nome:'Kit Rapunzel – Linha Completa', categoria:'creme', preco:164.22, tags:['lola'], images:['13.png']},
   {id:'P013', nome:'Kit Meu Cacho Minha Vida - Linha Completa', categoria:'creme', preco:173.70, tags:['lola'], images:['14.png']}
- ];
+];
 
 // Renderiza produtos
 function renderProdutos(lista){
@@ -194,6 +202,28 @@ function renderProdutos(lista){
   });
 }
 
+// Filtra por marca e mostra botão voltar
+function filtrarPorMarca(marca){
+  const resultados = catalogo.filter(p => p.tags.some(t=>t.toLowerCase()===marca.toLowerCase()));
+  renderProdutos(resultados);
+  document.getElementById('backCatalog').style.display='inline-block';
+}
+
+// Volta ao catálogo geral
+function voltarCatalogo(){
+  renderProdutos(catalogo);
+  document.getElementById('backCatalog').style.display='none';
+}
+
+// Busca produtos
+function buscar(){
+  const termo = document.getElementById('searchInput').value.toLowerCase();
+  const resultados = catalogo.filter(p => p.nome.toLowerCase().includes(termo));
+  renderProdutos(resultados);
+  document.getElementById('backCatalog').style.display='none';
+}
+
+// Inicializa catálogo completo
 renderProdutos(catalogo);
 </script>
 </body>
