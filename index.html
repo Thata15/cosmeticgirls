@@ -174,7 +174,8 @@ const imagensBanner = [
   "banner.png",
   "banner1.png",
   "banner2.png",
-  "banner3.png"
+  "banner3.png",
+  "banner4.png"
 ];
 
 let indiceBanner = 0;
@@ -189,18 +190,27 @@ setInterval(() => {
 // Catálogo de produtos
 const catalogo = [
   {id:'P001', nome:'Kit Completo Definição Natural-Salon line', categoria:'Kit', preco:96.3, tags:['Salon line'], images:['1.png']},
-  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Óleo', preco:49.9, tags:['Salon line'], images:['2.png']},
-  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Litrão', categoria:'shampoo', preco:72.9, tags:['salon line'], images:['3.png']},
+  {id:'P002', nome:'Kit Óleos Tratamento-Salon line', categoria:'Kit', preco:49.9, tags:['Salon line'], images:['2.png']},
+  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Litrão', categoria:'Kit', preco:72.9, tags:['salon line'], images:['3.png']},
   {id:'P004', nome:'Condicionador Novex', categoria:'condicionador', preco:68.0, tags:['Salon line'], images:['4.png']},
   {id:'P005', nome:'Máscara Elseve', categoria:'máscara', preco:55.0, tags:['elseve'], images:['5.png']},
-  {id:'P006', nome:'Kit Completo SOS Cachos', categoria:'creme', preco:160.20, tags:['salon line'], images:['6.png']},
-  {id:'P007', nome:'Kit Danos Vorazes - Shampoo + Booster + Leave-in + Óleo', categoria:'creme', preco:129.22, tags:['lola'], images:['11.png']},
+  {id:'P006', nome:'Kit Completo SOS Cachos', categoria:'Kit', preco:160.20, tags:['salon line'], images:['6.png']},
+  {id:'P007', nome:'Kit Danos Vorazes - Shampoo + Booster + Leave-in + Óleo', categoria:'Kit', preco:129.22, tags:['lola'], images:['11.png']},
   {id:'P008', nome:'Super Combo Hidratação e Brilho', categoria:'creme', preco:74.60, tags:['Kolene'], images:['8.png']},
-  {id:'P010', nome:'Divino Potão - Creme para Pentear', categoria:'creme', preco:12.90, tags:['skala'], images:['10.png']},
-  {id:'P011', nome:'Kit Morte Súbita', categoria:'creme', preco:167.65, tags:['lola'], images:['12.png']},
-  {id:'P012', nome:'Kit Rapunzel', categoria:'creme', preco:164.22, tags:['lola'], images:['13.png']},
-  {id:'P013', nome:'Kit Meu Cacho Minha Vida', categoria:'creme', preco:173.70, tags:['lola'], images:['14.png']},
-  {id:'P014', nome:'Creme Seda Cachos Definidos e Hidratados', categoria:'creme', preco:9.99, tags:['seda'], images:['15.png']}
+  {id:'P009', nome:'Divino Potão - Creme para Pentear', categoria:'creme', preco:12.90, tags:['skala'], images:['10.png']},
+  {id:'P010', nome:'Kit Morte Súbita', categoria:'Kit', preco:167.65, tags:['lola'], images:['12.png']},
+  {id:'P011', nome:'Kit Rapunzel', categoria:'Kit', preco:164.22, tags:['lola'], images:['13.png']},
+  {id:'P012', nome:'Kit Meu Cacho Minha Vida', categoria:'Kit', preco:173.70, tags:['lola'], images:['14.png']},
+  {id:'P013', nome:'Creme Seda Cachos Definidos e Hidratados', categoria:'creme', preco:9.99, tags:['seda'], images:['15.png']},
+  {id:'P014', nome:'Modelador Gelatina Kolene Cachinhos C/ Glitter', categoria:'gelatina', preco:21.90, tags:['kolene'], images:['16.png']},
+  {id:'P015', nome:'Condicionador Creme para Pentear Kolene Cachinhos', categoria:'creme', preco:15.90, tags:['kolene'], images:['17.png']},
+  {id:'P016', nome:'Spray Condicionador Desembaraçante Kolene Cachinhos', categoria:'Spray', preco:19.90, tags:['kolene'], images:['18.png']},
+  {id:'P017', nome:'Deo Colônia Kolene Cachinhos Toque De Carinho', categoria:'Colônia', preco:15.90, tags:['kolene'], images:['19.png']},
+  {id:'P018', nome:'Condicionador Ativador Kolene Cachinhos', categoria:'Condicionador', preco:16.90, tags:['kolene'], images:['20.png']},
+  {id:'P019', nome:'Condicionador Ativador Kolene Cachinhos', categoria:'Kit', preco:124.30, tags:['kolene'], images:['21.png']}
+
+
+
 ];
 
 function renderProdutos(lista){
