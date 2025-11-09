@@ -142,7 +142,7 @@ button:focus{outline:3px solid #ffd6ea; outline-offset:2px}
 // BANNER ROTATIVO RESPONSIVO
 // -----------------------
 const bannerImgsDesktop = ['banner1.png','banner2.png','banner3.png','banner4.png','banner5.png','banner6.png','banner7.png'];
-const bannerImgsMobile  = ['banner1-mob.png','banner2-mob.png','banner3-mob.png','banner4-mob.png','banner5-mob.png','banner6-mob.png','banner7-mob.png'];
+const bannerImgsMobile  = ['banner1-mob.png','banner2-mob.png','banner3-mob.png'];
 let bannerImgs = window.innerWidth <= 900 ? bannerImgsMobile : bannerImgsDesktop;
 let bannerIndex = 0;
 const bannerEl = document.getElementById('bannerRotativo');
@@ -266,3 +266,4 @@ renderProdutos(catalogo);
 </script>
 </body>
 </html>
+
