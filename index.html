@@ -16,25 +16,54 @@
     .logo-row{display:flex; align-items:center; justify-content:flex-start; gap:12px}
     .logo-row img{width:60px;height:60px;border-radius:50%;object-fit:cover}
     .logo-row h1{font-size:28px;margin:0}
-    .top-banner{position:relative; width:100%; height:400px; border-radius:12px; overflow:hidden; margin-top:6px}
+
+    /* ---------------- BANNER ROTATIVO ---------------- */
+    .top-banner{
+      position:relative;
+      width:100%;
+      height:400px;
+      border-radius:12px;
+      overflow:hidden;
+      margin-top:6px;
+    }
     .top-banner__img{
       width:100%;
       height:100%;
-      object-fit:cover; /* desktop */
+      object-fit:cover;
       display:block;
       transition: opacity 0.5s ease;
       opacity:1;
     }
+
+    /* BOTÕES DO BANNER (SETAS) */
+    .banner-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(255,255,255,0.6);
+      border:none;
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      font-size:22px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:0.3s;
+      backdrop-filter:blur(4px);
+    }
+    .banner-btn:hover{
+      background:rgba(255,255,255,0.9);
+    }
+    .banner-btn.left{left:12px;}
+    .banner-btn.right{right:12px;}
+
     .controls{display:flex; align-items:center; gap:12px}
     #cartButton{position:relative;background:var(--accent2); color:#fff; border:none; padding:10px 12px; border-radius:10px; cursor:pointer}
     #cartCount{position:absolute; top:-8px; right:-8px; background:#111; color:#fff; font-size:12px; padding:3px 7px; border-radius:20px;}
-    
-    /* Botões invisíveis */
-    .menuLink {
-      cursor: pointer;
-      font-weight: 600;
-    }
 
+    .menuLink {cursor:pointer;font-weight:600;}
     .menuLink:hover { color: var(--accent2); }
 
     /* Dropdown menus */
@@ -48,7 +77,6 @@
       animation: fade .35s;
       position: absolute;
     }
-
     .dropdownMenu button {
       display: block;
       width: 160px;
@@ -59,9 +87,7 @@
       font-size: 15px;
       cursor: pointer;
     }
-
     .dropdownMenu button:hover { color: var(--accent2); }
-
     @keyframes fade {
       from { opacity: 0; transform: translateY(-4px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -95,7 +121,7 @@
     .modal .btn.addcart{background:var(--accent); color:#fff}
     .modal .close{margin-top:10px; background:#eee}
 
-    /* Cart panel */
+    /* Carrinho */
     .cart-panel{position:fixed; right:0; top:0; height:100%; width:360px; max-width:95%; background:#fff; box-shadow:-6px 0 30px rgba(0,0,0,0.2); transform:translateX(110%); transition:transform .28s ease; z-index:1300; display:flex; flex-direction:column}
     .cart-panel.open{transform:translateX(0)}
     .cart-header{padding:16px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; align-items:center}
@@ -107,336 +133,295 @@
     .cart-footer .subtotal{font-weight:700; margin-bottom:10px}
     .checkout-btn{width:100%; padding:12px; background:var(--accent2); color:#fff; border:none; border-radius:10px; cursor:pointer}
 
-    /* responsive */
+    /* responsivo */
     @media(max-width:1200px){ .grid{grid-template-columns:repeat(5,1fr)} }
-    @media(max-width:900px){ 
-      .grid{grid-template-columns:repeat(4,1fr)} 
-      .top-banner{height:220px} 
-      .logo-row h1{font-size:20px} 
-      .top-banner__img{object-fit:contain;} 
+    @media(max-width:900px){
+      .grid{grid-template-columns:repeat(4,1fr)}
+      .top-banner{height:220px}
+      .logo-row h1{font-size:20px}
+      .top-banner__img{object-fit:contain;}
     }
     @media(max-width:480px){ .grid{grid-template-columns:repeat(2,1fr)} .modal{max-width:340px} }
 
-    /* Accessibility focus styles */
     button:focus{outline:3px solid #ffd6ea; outline-offset:2px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="logo-row" style="position:relative;">
-        <img src="logo.png" alt="Logo Cachos Divinos">
-        <h1>Cachos Divinos <small>— Enrolou, Brilhou!</small></h1>
 
-        <!-- Botões invisíveis Produtos / Marcas -->
-        <nav style="display:flex; gap:18px; margin-left:20px; position:relative;">
-          <span class="menuLink" onclick="toggleMenu('menuProdutos', this)">PRODUTOS</span>
-          <span class="menuLink" onclick="toggleMenu('menuMarcas', this)">MARCAS</span>
-        </nav>
+<div class="wrap">
+  <header>
+    <div class="logo-row">
+      <img src="logo.png" alt="Logo Cachos Divinos">
+      <h1>Cachos Divinos <small>— Enrolou, Brilhou!</small></h1>
 
-        <div style="margin-left:auto; display:flex; gap:8px; align-items:center">
-          <div class="controls">
-            <button id="cartButton" aria-label="Abrir sacola">
-              🛒 Sacola <span id="cartCount" aria-live="polite">0</span>
-            </button>
-          </div>
+      <nav style="display:flex; gap:18px; margin-left:20px;">
+        <span class="menuLink" onclick="toggleMenu('menuProdutos', this)">PRODUTOS</span>
+        <span class="menuLink" onclick="toggleMenu('menuMarcas', this)">MARCAS</span>
+      </nav>
+
+      <div style="margin-left:auto; display:flex; gap:8px; align-items:center">
+        <button id="cartButton">🛒 Sacola <span id="cartCount">0</span></button>
+      </div>
+    </div>
+
+    <div class="top-banner">
+      <img id="bannerRotativo" class="top-banner__img" src="banner1.png" alt="Banner promocional">
+
+      <!-- ✅ SETAS DO BANNER -->
+      <button class="banner-btn left" onclick="prevBanner()">❮</button>
+      <button class="banner-btn right" onclick="nextBanner()">❯</button>
+    </div>
+  </header>
+
+  <!-- Dropdown menus -->
+  <div id="menuProdutos" class="dropdownMenu">
+    <button onclick="filtrarPorCategoria('Pente')">Pentes</button>
+    <button onclick="filtrarPorCategoria('Escova')">Escovas</button>
+    <button onclick="filtrarPorCategoria('Creme')">Creme</button>
+    <button onclick="filtrarPorCategoria('Shampoo')">Shampoo</button>
+    <button onclick="filtrarPorCategoria('Condicionador')">Condicionador</button>
+    <button onclick="filtrarPorCategoria('Máscara')">Máscaras</button>
+    <button onclick="filtrarPorCategoria('Kit')">Kits</button>
+  </div>
+
+  <div id="menuMarcas" class="dropdownMenu">
+    <button onclick="filtrarPorMarca('seda')">Seda</button>
+    <button onclick="filtrarPorMarca('salon line')">Salon Line</button>
+    <button onclick="filtrarPorMarca('elseve')">Elseve</button>
+    <button onclick="filtrarPorMarca('kolene')">Kolene</button>
+    <button onclick="filtrarPorMarca('lola')">Lola</button>
+    <button onclick="filtrarPorMarca('novex')">Novex</button>
+    <button onclick="filtrarPorMarca('skala')">Skala</button>
+    <button onclick="filtrarPorMarca('acessorios')">Acessórios</button>
+  </div>
+
+  <div class="search-bar">
+    <input id="searchInput" type="text" placeholder="Buscar produtos...">
+    <button onclick="buscar()">Pesquisar</button>
+  </div>
+
+  <div class="grid" id="productGrid"></div>
+</div>
+
+<!-- Modal Produto -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <img id="modalImg" class="img" src="" alt="">
+    <div class="title" id="modalTitle"></div>
+    <div class="cat" id="modalCat"></div>
+    <div class="price" id="modalPrice"></div>
+    <div class="actions">
+      <button class="btn whats" id="btnWhats">Compra Rápida (WhatsApp)</button>
+      <button class="btn addcart" id="btnAddCart">Adicionar ao carrinho</button>
+    </div>
+    <button class="btn close" id="btnClose">Fechar</button>
+  </div>
+</div>
+
+<!-- Carrinho -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <strong>Sacola</strong>
+    <button onclick="closeCartPanel()">✕</button>
+  </div>
+  <div class="cart-body" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="subtotal">Subtotal: R$ <span id="cartSubtotal">0.00</span></div>
+    <button class="checkout-btn" onclick="finalizarCompra()">Finalizar compra</button>
+  </div>
+</div>
+
+
+<script>
+/* === FUNÇÕES DROPDOWN === */
+function toggleMenu(id, el) {
+  document.querySelectorAll('.dropdownMenu').forEach(m => m.style.display = "none");
+  const menu = document.getElementById(id);
+  const rect = el.getBoundingClientRect();
+  menu.style.left = rect.left + 'px';
+  menu.style.top = (rect.bottom + window.scrollY + 6) + 'px';
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+function closeAllDropdowns() {
+  document.querySelectorAll('.dropdownMenu').forEach(m => m.style.display = "none");
+}
+document.addEventListener('click', (e)=>{
+  if(!e.target.closest('.menuLink') && !e.target.closest('.dropdownMenu')) closeAllDropdowns();
+});
+
+/* === FILTRAGEM === */
+function filtrarPorCategoria(cat) {
+  renderProdutos(catalogo.filter(p => p.categoria.toLowerCase() === cat.toLowerCase()));
+  closeAllDropdowns();
+}
+function filtrarPorMarca(marca) {
+  renderProdutos(catalogo.filter(p => p.tags.includes(marca.toLowerCase())));
+  closeAllDropdowns();
+}
+function buscar(){
+  const termo = document.getElementById('searchInput').value.toLowerCase();
+  renderProdutos(catalogo.filter(p => p.nome.toLowerCase().includes(termo)));
+}
+
+/* === RENDER PRODUTOS === */
+function renderProdutos(lista){
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML='';
+  lista.forEach(p=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `
+      <img src="${p.images[0]}" alt="${p.nome}">
+      <div class="card-content">
+        <h4>${p.nome}</h4>
+        <div class="dim">${p.categoria}</div>
+        <div class="price-row">
+          <button class="price-btn">Ver preço</button>
+          <button class="add-btn">+</button>
         </div>
-      </div>
+      </div>`;
+      card.querySelector('.price-btn').addEventListener('click',()=>abrirModal(p));
+      card.querySelector('.add-btn').addEventListener('click',()=>{ addToCart(p); openCartPanel() });
+      grid.appendChild(card);
+  });
+}
 
-      <div class="top-banner">
-        <img id="bannerRotativo" class="top-banner__img" src="banner1.png" alt="Banner promocional">
-      </div>
-    </header>
+/* === MODAL === */
+let currentProduct=null;
+function abrirModal(prod){
+  currentProduct = prod;
+  modalImg.src = prod.images[0];
+  modalImg.alt = prod.nome;
+  modalTitle.textContent = prod.nome;
+  modalCat.textContent = prod.categoria;
+  modalPrice.textContent = "R$ " + prod.preco.toFixed(2).replace('.', ',');
+  modalBg.style.display='flex';
+}
+function fecharModal(){ modalBg.style.display='none'; }
+modalBg.addEventListener('click', e=>{ if(e.target === modalBg) fecharModal(); });
+btnClose.addEventListener('click', fecharModal);
 
-    <!-- Dropdowns -->
-    <div id="menuProdutos" class="dropdownMenu" aria-hidden="true">
-      <button onclick="filtrarPorCategoria('Pente')">Pentes</button>
-      <button onclick="filtrarPorCategoria('Escova')">Escovas</button>
-      <button onclick="filtrarPorCategoria('Creme')">Creme</button>
-      <button onclick="filtrarPorCategoria('Shampoo')">Shampoo</button>
-      <button onclick="filtrarPorCategoria('Condicionador')">Condicionador</button>
-      <button onclick="filtrarPorCategoria('Máscara')">Máscaras</button>
-      <button onclick="filtrarPorCategoria('Kit')">Kits</button>
-    </div>
+/* === CARRINHO === */
+let cart = [];
+function addToCart(product){
+  const ex = cart.find(i => i.id === product.id);
+  if(ex) ex.qtd++;
+  else cart.push({id:product.id,nome:product.nome,preco:product.preco,img:product.images[0],qtd:1});
+  updateCartCount();
+}
+function updateCartCount(){
+  cartCount.textContent = cart.reduce((a,b)=>a+b.qtd,0);
+  renderCart();
+}
+function renderCart(){
+  cartItems.innerHTML='';
+  let subtotal = 0;
+  cart.forEach(item=>{
+    subtotal += item.preco * item.qtd;
+    const div = document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML = `<img src="${item.img}"><div class="meta"><strong>${item.nome}</strong><div>R$ ${item.preco.toFixed(2).replace('.', ',')} x ${item.qtd}</div></div>`;
+    cartItems.appendChild(div);
+  });
+  cartSubtotal.textContent = subtotal.toFixed(2).replace('.', ',');
+}
+cartButton.addEventListener('click',()=>{
+  cartPanel.classList.toggle('open');
+});
+function openCartPanel(){ cartPanel.classList.add('open'); }
+function closeCartPanel(){ cartPanel.classList.remove('open'); }
 
-    <div id="menuMarcas" class="dropdownMenu" aria-hidden="true">
-      <button onclick="filtrarPorMarca('seda')">Seda</button>
-      <button onclick="filtrarPorMarca('salon line')">Salon Line</button>
-      <button onclick="filtrarPorMarca('elseve')">Elseve</button>
-      <button onclick="filtrarPorMarca('kolene')">Kolene</button>
-      <button onclick="filtrarPorMarca('lola')">Lola</button>
-      <button onclick="filtrarPorMarca('novex')">Novex</button>
-      <button onclick="filtrarPorMarca('skala')">Skala</button>
-      <button onclick="filtrarPorMarca('acessorios')">Acessórios</button>
-    </div>
+btnAddCart.addEventListener('click',()=>{
+  addToCart(currentProduct);
+  fecharModal();
+  openCartPanel();
+});
+btnWhats.addEventListener('click',()=>{
+  const numero = "5566999722543";
+  let msg = `Olá! Quero comprar: ${currentProduct.nome} - R$ ${currentProduct.preco.toFixed(2).replace('.',',')}`;
+  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`);
+});
+function finalizarCompra(){
+  if(cart.length === 0){ alert("Seu carrinho está vazio"); return; }
+  const numero = "5566999722543";
+  let msg = "Olá! Quero comprar:\n";
+  cart.forEach(i=> msg += `${i.nome} x ${i.qtd} = R$ ${(i.preco*i.qtd).toFixed(2).replace('.',',')}\n`);
+  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`);
+}
 
-    <div class="search-bar">
-      <input id="searchInput" type="text" placeholder="Buscar produtos..." aria-label="Buscar produtos">
-      <button onclick="buscar()">Pesquisar</button>
-    </div>
+/* === CATALOGO DE PRODUTOS === */
+const catalogo = [
+  {id:'P001', nome:'Kit Completo Definição Natural - Salon line', categoria:'Kit', preco:96.3, tags:['salon line'], images:['1.png']},
+  {id:'P002', nome:'Kit Óleos Tratamento - Salon line', categoria:'Kit', preco:49.9, tags:['salon line'], images:['2.png']},
+  {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Litrão', categoria:'Kit', preco:72.9, tags:['salon line'], images:['3.png']},
+  {id:'P004', nome:'Condicionador Novex', categoria:'Condicionador', preco:68.0, tags:['salon line'], images:['4.png']},
+  {id:'P005', nome:'Máscara Elseve', categoria:'Máscara', preco:55.0, tags:['elseve'], images:['5.png']},
+  {id:'P006', nome:'Kit Completo SOS Cachos', categoria:'Kit', preco:160.20, tags:['salon line'], images:['6.png']},
+  {id:'P007', nome:'Kit Danos Vorazes - Lola', categoria:'Kit', preco:129.22, tags:['lola'], images:['11.png']},
+  {id:'P008', nome:'Super Combo Hidratação e Brilho', categoria:'Creme', preco:74.60, tags:['kolene'], images:['8.png']},
+  {id:'P009', nome:'Divino Potão - Creme para Pentear', categoria:'Creme', preco:12.90, tags:['skala'], images:['10.png']},
+  {id:'P010', nome:'Kit Morte Súbita', categoria:'Kit', preco:167.65, tags:['lola'], images:['12.png']},
+  {id:'P011', nome:'Kit Rapunzel', categoria:'Kit', preco:164.22, tags:['lola'], images:['13.png']},
+  {id:'P012', nome:'Kit Meu Cacho Minha Vida', categoria:'Kit', preco:173.70, tags:['lola'], images:['14.png']},
+  {id:'P013', nome:'Creme Seda Cachos Definidos e Hidratados', categoria:'Creme', preco:9.99, tags:['seda'], images:['15.png']},
+  {id:'P014', nome:'Modelador Gelatina Kolene Cachinhos C/ Glitter', categoria:'Gelatina', preco:21.90, tags:['kolene'], images:['16.png']},
+  {id:'P015', nome:'Condicionador Creme para Pentear Kolene Cachinhos', categoria:'Creme', preco:15.90, tags:['kolene'], images:['17.png']},
+  {id:'P016', nome:'Spray Condicionador Desembaraçante Kolene Cachinhos', categoria:'Spray', preco:19.90, tags:['kolene'], images:['18.png']},
+  {id:'P017', nome:'Deo Colônia Kolene Cachinhos Toque De Carinho', categoria:'Colônia', preco:15.90, tags:['kolene'], images:['19.png']},
+  {id:'P018', nome:'Condicionador Ativador Kolene Cachinhos', categoria:'Condicionador', preco:16.90, tags:['kolene'], images:['20.png']},
+  {id:'P019', nome:'Condicionador Ativador Kolene Cachinhos - Kit', categoria:'Kit', preco:124.30, tags:['kolene'], images:['21.png']},
+  {id:'P020', nome:'Shampoo Seda Boom Hidratação Pro-Curvatura', categoria:'Shampoo', preco:10.89, tags:['seda'], images:['22.png']},
+  {id:'P021', nome:'Condicionador Seda Boom Hidratação Pro-Curvatura', categoria:'Condicionador', preco:12.90, tags:['seda'], images:['23.png']},
+  {id:'P022', nome:'Creme de pentear Seda Boom Definição Intensa 350ml', categoria:'Creme', preco:9.99, tags:['seda'], images:['24.png']},
+  {id:'P023', nome:'Creme de pentear Seda Boom Definição Intensa 1kg', categoria:'Creme', preco:22.63, tags:['seda'], images:['25.png']},
+  {id:'P024', nome:'Creme de pentear Seda Boom Definição Flexível 350ml', categoria:'Creme', preco:12.90, tags:['seda'], images:['26.png']},
+  {id:'P025', nome:'Creme de pentear Seda Boom Definição Flexível 1kg', categoria:'Creme', preco:22.66, tags:['seda'], images:['27.png']},
+  {id:'P026', nome:'Shampoo Seda Luminous UV', categoria:'Shampoo', preco:11.49, tags:['seda'], images:['28.png']},
+  {id:'P027', nome:'Condicionador Seda Luminous UV', categoria:'Condicionador', preco:13.49, tags:['seda'], images:['29.png']},
+  {id:'P028', nome:'Creme de Pentear Seda Luminous UV', categoria:'Creme', preco:9.99, tags:['seda'], images:['30.png']},
+  {id:'P029', nome:'Escova Flex Fita Curls Azul - Ricca', categoria:'Escova', preco:49.90, tags:['pentes'], images:['31.png']},
+  {id:'P030', nome:'Xuxinha de Cetim Preta - Turban', categoria:'Xuxinha', preco:5.52, tags:['acessorios'], images:['32.png']},
+  {id:'P031', nome:'Pente Desembaraçante - Ricca', categoria:'Pente', preco:10.32, tags:['acessorios'], images:['33.png']},
+  {id:'P032', nome:'Pente Baby Hair - Ricca', categoria:'Pente', preco:14.24, tags:['acessorios'], images:['34.png']}
+];
+renderProdutos(catalogo);
 
-    <div class="grid" id="productGrid" aria-live="polite"></div>
-  </div>
 
-  <!-- Modal -->
-  <div class="modal-bg" id="modalBg" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <img id="modalImg" class="img" src="" alt="Imagem do produto">
-      <div class="title modal-title" id="modalTitle"></div>
-      <div class="cat" id="modalCat"></div>
-      <div class="price" id="modalPrice"></div>
-      <div class="actions">
-        <button class="btn whats" id="btnWhats">Compra Rápida (WhatsApp)</button>
-        <button class="btn addcart" id="btnAddCart">Adicionar ao carrinho</button>
-      </div>
-      <button class="btn close modal-close" id="btnClose">Fechar</button>
-    </div>
-  </div>
+/* === BANNER ROTATIVO + SETAS === */
+const banners = ["banner1.png","banner2.png","banner3.png"];
+let bannerIndex = 0;
+const bannerEl = document.getElementById("bannerRotativo");
+let bannerInterval = setInterval(nextBanner, 4000);
 
-  <!-- Cart panel -->
-  <div class="cart-panel" id="cartPanel" aria-hidden="true">
-    <div class="cart-header">
-      <strong>Sacola</strong>
-      <button onclick="closeCartPanel()" aria-label="Fechar sacola">✕</button>
-    </div>
-    <div class="cart-body" id="cartItems"></div>
-    <div class="cart-footer">
-      <div class="subtotal">Subtotal: R$ <span id="cartSubtotal">0.00</span></div>
-      <button class="checkout-btn" onclick="finalizarCompra()">Finalizar compra</button>
-    </div>
-  </div>
+// Troca automática
+function trocarBanner() {
+  bannerEl.style.opacity = 0;
+  setTimeout(() => {
+    bannerEl.src = banners[bannerIndex];
+    bannerEl.style.opacity = 1;
+  }, 300);
+}
 
-  <script>
-    // Funções de filtro / UI
-    function toggleMenu(id, el) {
-      // fechar todos
-      document.querySelectorAll('.dropdownMenu').forEach(m => m.style.display = "none");
-      const menu = document.getElementById(id);
-      // posiciona o dropdown perto do elemento clicado (opcional)
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        menu.style.left = rect.left + 'px';
-        menu.style.top = (rect.bottom + window.scrollY + 6) + 'px';
-      }
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
-    }
+// Botão → (avança)
+function nextBanner(){
+  bannerIndex = (bannerIndex + 1) % banners.length;
+  trocarBanner();
+  resetAutoSlide();
+}
 
-    function filtrarPorCategoria(cat) {
-      const lista = catalogo.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
-      renderProdutos(lista);
-      closeAllDropdowns();
-    }
+// Botão ← (voltar)
+function prevBanner(){
+  bannerIndex = (bannerIndex - 1 + banners.length) % banners.length;
+  trocarBanner();
+  resetAutoSlide();
+}
 
-    function filtrarPorMarca(marca) {
-      const lista = catalogo.filter(p => p.tags.includes(marca.toLowerCase()));
-      renderProdutos(lista);
-      closeAllDropdowns();
-    }
+// Reinicia timer quando clicar nos botões
+function resetAutoSlide(){
+  clearInterval(bannerInterval);
+  bannerInterval = setInterval(nextBanner, 4000);
+}
+</script>
 
-    function buscar() {
-      const termo = document.getElementById('searchInput').value.toLowerCase();
-      renderProdutos(catalogo.filter(p => p.nome.toLowerCase().includes(termo)));
-    }
-
-    function closeAllDropdowns(){
-      document.querySelectorAll('.dropdownMenu').forEach(m => m.style.display = "none");
-    }
-
-    // Exibição dos produtos
-    function renderProdutos(lista) {
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML='';
-      lista.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <img src="${p.images[0]}" alt="${p.nome}">
-          <div class="card-content" style="width:100%">
-            <h4>${p.nome}</h4>
-            <div class="dim">${p.categoria}</div>
-            <div class="price-row">
-              <button class="price-btn" aria-label="Ver preço de ${p.nome}">Ver preço</button>
-              <button class="add-btn" aria-label="Adicionar ${p.nome} ao carrinho">+</button>
-            </div>
-          </div>`;
-        // abrir modal ao clicar em ver preço
-        card.querySelector('.price-btn').addEventListener('click', () => abrirModal(p));
-        // adicionar ao carrinho diretamente
-        card.querySelector('.add-btn').addEventListener('click', () => { addToCart(p); openCartPanel(); });
-        grid.appendChild(card);
-      });
-    }
-    
-    // Modal
-    function abrirModal(prod) {
-      currentProduct = prod;
-      document.getElementById('modalImg').src = prod.images[0];
-      document.getElementById('modalImg').alt = prod.nome;
-      document.getElementById('modalTitle').textContent = prod.nome;
-      document.getElementById('modalCat').textContent = prod.categoria;
-      document.getElementById('modalPrice').textContent = 'R$ ' + prod.preco.toFixed(2).replace('.', ',');
-      document.getElementById('modalBg').style.display = 'flex'; 
-      document.getElementById('modalBg').setAttribute('aria-hidden', 'false');
-    }
-
-    function fecharModal() {
-      document.getElementById('modalBg').style.display = 'none'; 
-      document.getElementById('modalBg').setAttribute('aria-hidden', 'true');
-    }
-
-    // Fechar modal ao clicar fora
-    document.getElementById('modalBg').addEventListener('click', function(e){
-      if(e.target === this) fecharModal();
-    });
-    // fechar modal com botão
-    document.getElementById('btnClose').addEventListener('click', fecharModal);
-
-    // Carrinho
-    let cart = [];
-    const cartButton = document.getElementById('cartButton');
-    const cartCount = document.getElementById('cartCount');
-    const cartPanel = document.getElementById('cartPanel');
-    const cartItemsEl = document.getElementById('cartItems');
-    const cartSubtotalEl = document.getElementById('cartSubtotal');
-    let currentProduct = null;
-
-    function addToCart(product) {
-      const existing = cart.find(i => i.id === product.id);
-      if (existing) existing.qtd++;
-      else cart.push({ id: product.id, nome: product.nome, preco: product.preco, img: product.images[0], qtd: 1 });
-      updateCartCount();
-    }
-
-    function updateCartCount() {
-      cartCount.textContent = cart.reduce((a, b) => a + b.qtd, 0);
-      renderCart();
-    }
-
-    function renderCart() {
-      cartItemsEl.innerHTML = '';
-      let subtotal = 0;
-      cart.forEach(item => {
-        subtotal += item.preco * item.qtd;
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `<img src="${item.img}" alt="${item.nome}"><div class="meta"><strong>${item.nome}</strong><div>R$ ${item.preco.toFixed(2).replace('.', ',')} x ${item.qtd}</div></div>`;
-        cartItemsEl.appendChild(div);
-      });
-      cartSubtotalEl.textContent = subtotal.toFixed(2).replace('.', ',');
-    }
-
-    // Abrir / fechar painel do carrinho
-    cartButton.addEventListener('click', () => {
-      if(cartPanel.classList.contains('open')) closeCartPanel();
-      else openCartPanel();
-    });
-
-    function openCartPanel(){
-      cartPanel.classList.add('open');
-      cartPanel.setAttribute('aria-hidden','false');
-      renderCart();
-    }
-    function closeCartPanel(){
-      cartPanel.classList.remove('open');
-      cartPanel.setAttribute('aria-hidden','true');
-    }
-
-    // Finalizar compra via WhatsApp
-    function finalizarCompra() {
-      if (cart.length === 0) {
-        alert('Seu carrinho está vazio');
-        return;
-      }
-      const numero = '5566999722543';
-      let msg = 'Olá! Quero comprar os seguintes produtos:\n';
-      cart.forEach(i => msg += `${i.nome} x ${i.qtd} = R$ ${ (i.preco * i.qtd).toFixed(2).replace('.', ',') }\n`);
-      msg += 'Subtotal: R$ ' + cart.reduce((a, b) => a + b.preco * b.qtd, 0).toFixed(2).replace('.', ',');
-      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    // Compra rápida do produto mostrado no modal (botão do modal)
-    document.getElementById('btnWhats').addEventListener('click', function(){
-      if(!currentProduct){
-        alert('Nenhum produto selecionado');
-        return;
-      }
-      const numero = '5566999722543';
-      let msg = `Olá! Quero comprar: ${currentProduct.nome} - R$ ${currentProduct.preco.toFixed(2).replace('.', ',')}`;
-      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-
-    // Adicionar ao carrinho a partir do modal
-    document.getElementById('btnAddCart').addEventListener('click', function(){
-      if(!currentProduct) return;
-      addToCart(currentProduct);
-      fecharModal();
-      openCartPanel();
-    });
-
-    // ---------------- CATALOGO DE PRODUTOS ----------------
-    const catalogo = [
-      {id:'P001', nome:'Kit Completo Definição Natural - Salon line', categoria:'Kit', preco:96.3, tags:['salon line'], images:['1.png']},
-      {id:'P002', nome:'Kit Óleos Tratamento - Salon line', categoria:'Kit', preco:49.9, tags:['salon line'], images:['2.png']},
-      {id:'P003', nome:'Kit S.O.S Hidratação Óleo de Rícino Litrão', categoria:'Kit', preco:72.9, tags:['salon line'], images:['3.png']},
-      {id:'P004', nome:'Condicionador Novex', categoria:'Condicionador', preco:68.0, tags:['salon line'], images:['4.png']},
-      {id:'P005', nome:'Máscara Elseve', categoria:'Máscara', preco:55.0, tags:['elseve'], images:['5.png']},
-      {id:'P006', nome:'Kit Completo SOS Cachos', categoria:'Kit', preco:160.20, tags:['salon line'], images:['6.png']},
-      {id:'P007', nome:'Kit Danos Vorazes - Lola', categoria:'Kit', preco:129.22, tags:['lola'], images:['11.png']},
-      {id:'P008', nome:'Super Combo Hidratação e Brilho', categoria:'Creme', preco:74.60, tags:['kolene'], images:['8.png']},
-      {id:'P009', nome:'Divino Potão - Creme para Pentear', categoria:'Creme', preco:12.90, tags:['skala'], images:['10.png']},
-      {id:'P010', nome:'Kit Morte Súbita', categoria:'Kit', preco:167.65, tags:['lola'], images:['12.png']},
-      {id:'P011', nome:'Kit Rapunzel', categoria:'Kit', preco:164.22, tags:['lola'], images:['13.png']},
-      {id:'P012', nome:'Kit Meu Cacho Minha Vida', categoria:'Kit', preco:173.70, tags:['lola'], images:['14.png']},
-      {id:'P013', nome:'Creme Seda Cachos Definidos e Hidratados', categoria:'Creme', preco:9.99, tags:['seda'], images:['15.png']},
-      {id:'P014', nome:'Modelador Gelatina Kolene Cachinhos C/ Glitter', categoria:'Gelatina', preco:21.90, tags:['kolene'], images:['16.png']},
-      {id:'P015', nome:'Condicionador Creme para Pentear Kolene Cachinhos', categoria:'Creme', preco:15.90, tags:['kolene'], images:['17.png']},
-      {id:'P016', nome:'Spray Condicionador Desembaraçante Kolene Cachinhos', categoria:'Spray', preco:19.90, tags:['kolene'], images:['18.png']},
-      {id:'P017', nome:'Deo Colônia Kolene Cachinhos Toque De Carinho', categoria:'Colônia', preco:15.90, tags:['kolene'], images:['19.png']},
-      {id:'P018', nome:'Condicionador Ativador Kolene Cachinhos', categoria:'Condicionador', preco:16.90, tags:['kolene'], images:['20.png']},
-      {id:'P019', nome:'Condicionador Ativador Kolene Cachinhos - Kit', categoria:'Kit', preco:124.30, tags:['kolene'], images:['21.png']},
-      {id:'P020', nome:'Shampoo Seda Boom Hidratação Pro-Curvatura', categoria:'Shampoo', preco:10.89, tags:['seda'], images:['22.png']},
-      {id:'P021', nome:'Condicionador Seda Boom Hidratação Pro-Curvatura', categoria:'Condicionador', preco:12.90, tags:['seda'], images:['23.png']},
-      {id:'P022', nome:'Creme de pentear Seda Boom Definição Intensa 350ml', categoria:'Creme', preco:9.99, tags:['seda'], images:['24.png']},
-      {id:'P023', nome:'Creme de pentear Seda Boom Definição Intensa 1kg', categoria:'Creme', preco:22.63, tags:['seda'], images:['25.png']},
-      {id:'P024', nome:'Creme de pentear Seda Boom Definição Flexível 350ml', categoria:'Creme', preco:12.90, tags:['seda'], images:['26.png']},
-      {id:'P025', nome:'Creme de pentear Seda Boom Definição Flexível 1kg', categoria:'Creme', preco:22.66, tags:['seda'], images:['27.png']},
-      {id:'P026', nome:'Shampoo Seda Luminous UV', categoria:'Shampoo', preco:11.49, tags:['seda'], images:['28.png']},
-      {id:'P027', nome:'Condicionador Seda Luminous UV', categoria:'Condicionador', preco:13.49, tags:['seda'], images:['29.png']},
-      {id:'P028', nome:'Creme de Pentear Seda Luminous UV', categoria:'Creme', preco:9.99, tags:['seda'], images:['30.png']},
-      {id:'P029', nome:'Escova Flex Fita Curls Azul - Ricca', categoria:'Escova', preco:49.90, tags:['pentes'], images:['31.png']},
-      {id:'P030', nome:'Xuxinha de Cetim Preta - Turban', categoria:'Xuxinha', preco:5.52, tags:['acessorios'], images:['32.png']},
-      {id:'P031', nome:'Pente Desembaraçante - Ricca', categoria:'Pente', preco:10.32, tags:['acessorios'], images:['33.png']},
-      {id:'P032', nome:'Pente Baby Hair - Ricca', categoria:'Pente', preco:14.24, tags:['acessorios'], images:['34.png']}
-    ];
-
-    // Exibição inicial dos produtos
-    renderProdutos(catalogo);
-
-    // ---------------- BANNER ROTATIVO COM FADE ----------------
-    const banners = ["banner1.png","banner2.png","banner3.png"];
-    let bannerIndex = 0;
-    const bannerEl = document.getElementById("bannerRotativo");
-
-    function trocarBanner() {
-      // fade out
-      bannerEl.style.opacity = 0;
-      setTimeout(() => {
-        bannerIndex = (bannerIndex + 1) % banners.length;
-        bannerEl.src = banners[bannerIndex];
-        // fade in
-        bannerEl.style.opacity = 1;
-      }, 500); // 500ms = tempo do fade
-    }
-
-    // inicia a troca automática a cada 4s
-    setInterval(trocarBanner, 4000);
-
-    // Fechar dropdowns se clicar fora
-    document.addEventListener('click', function(e){
-      const isMenuLink = e.target.closest('.menuLink');
-      const isDropdown = e.target.closest('.dropdownMenu');
-      if(!isMenuLink && !isDropdown) closeAllDropdowns();
-    });
-  </script>
 </body>
 </html>
