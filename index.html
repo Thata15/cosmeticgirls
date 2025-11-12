@@ -22,17 +22,14 @@
       height:100%;
       object-fit:cover; /* desktop */
       display:block;
+      transition: opacity 0.5s ease;
     }
     .controls{display:flex; align-items:center; gap:12px}
     #cartButton{position:relative;background:var(--accent2); color:#fff; border:none; padding:10px 12px; border-radius:10px; cursor:pointer}
     #cartCount{position:absolute; top:-8px; right:-8px; background:#111; color:#fff; font-size:12px; padding:3px 7px; border-radius:20px;}
     
     /* Botões invisíveis */
-    .menuLink {
-      cursor: pointer;
-      font-weight: 600;
-    }
-
+    .menuLink { cursor: pointer; font-weight: 600; }
     .menuLink:hover { color: var(--accent2); }
 
     /* Dropdown menus */
@@ -114,7 +111,6 @@
     }
     @media(max-width:480px){ .grid{grid-template-columns:repeat(2,1fr)} .modal{max-width:340px} }
 
-    /* Accessibility focus styles */
     button:focus{outline:3px solid #ffd6ea; outline-offset:2px}
   </style>
 </head>
@@ -125,7 +121,6 @@
         <img src="logo.png" alt="Logo Cachos Divinos">
         <h1>Cachos Divinos <small>— Enrolou, Brilhou!</small></h1>
 
-        <!-- Botões invisíveis Produtos / Marcas -->
         <nav style="display:flex; gap:18px; margin-left:20px;">
           <span class="menuLink" onclick="toggleMenu('menuProdutos')">PRODUTOS</span>
           <span class="menuLink" onclick="toggleMenu('menuMarcas')">MARCAS</span>
@@ -246,7 +241,7 @@
         grid.appendChild(card);
       });
     }
-    
+
     // Modal
     function abrirModal(prod) {
       currentProduct = prod;
@@ -347,6 +342,22 @@
 
     // Exibição inicial dos produtos
     renderProdutos(catalogo);
+
+    // ---------------- BANNER ROTATIVO COM FADE ----------------
+    const banners = ["banner1.png","banner2.png","banner3.png"];
+    let bannerIndex = 0;
+    const bannerEl = document.getElementById("bannerRotativo");
+
+    function trocarBanner() {
+      bannerEl.style.opacity = 0;
+      setTimeout(() => {
+        bannerIndex = (bannerIndex + 1) % banners.length;
+        bannerEl.src = banners[bannerIndex];
+        bannerEl.style.opacity = 1;
+      }, 500);
+    }
+
+    setInterval(trocarBanner, 4000);
   </script>
 </body>
 </html>
