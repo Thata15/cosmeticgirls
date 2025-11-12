@@ -23,13 +23,18 @@
       object-fit:cover; /* desktop */
       display:block;
       transition: opacity 0.5s ease;
+      opacity:1;
     }
     .controls{display:flex; align-items:center; gap:12px}
     #cartButton{position:relative;background:var(--accent2); color:#fff; border:none; padding:10px 12px; border-radius:10px; cursor:pointer}
     #cartCount{position:absolute; top:-8px; right:-8px; background:#111; color:#fff; font-size:12px; padding:3px 7px; border-radius:20px;}
     
     /* Botões invisíveis */
-    .menuLink { cursor: pointer; font-weight: 600; }
+    .menuLink {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
     .menuLink:hover { color: var(--accent2); }
 
     /* Dropdown menus */
@@ -41,11 +46,12 @@
       margin: 10px 0;
       box-shadow: 0 4px 18px rgba(0,0,0,0.15);
       animation: fade .35s;
+      position: absolute;
     }
 
     .dropdownMenu button {
       display: block;
-      width: 100%;
+      width: 160px;
       padding: 8px;
       border: none;
       background: none;
@@ -111,19 +117,21 @@
     }
     @media(max-width:480px){ .grid{grid-template-columns:repeat(2,1fr)} .modal{max-width:340px} }
 
+    /* Accessibility focus styles */
     button:focus{outline:3px solid #ffd6ea; outline-offset:2px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <div class="logo-row">
+      <div class="logo-row" style="position:relative;">
         <img src="logo.png" alt="Logo Cachos Divinos">
         <h1>Cachos Divinos <small>— Enrolou, Brilhou!</small></h1>
 
-        <nav style="display:flex; gap:18px; margin-left:20px;">
-          <span class="menuLink" onclick="toggleMenu('menuProdutos')">PRODUTOS</span>
-          <span class="menuLink" onclick="toggleMenu('menuMarcas')">MARCAS</span>
+        <!-- Botões invisíveis Produtos / Marcas -->
+        <nav style="display:flex; gap:18px; margin-left:20px; position:relative;">
+          <span class="menuLink" onclick="toggleMenu('menuProdutos', this)">PRODUTOS</span>
+          <span class="menuLink" onclick="toggleMenu('menuMarcas', this)">MARCAS</span>
         </nav>
 
         <div style="margin-left:auto; display:flex; gap:8px; align-items:center">
@@ -141,7 +149,7 @@
     </header>
 
     <!-- Dropdowns -->
-    <div id="menuProdutos" class="dropdownMenu">
+    <div id="menuProdutos" class="dropdownMenu" aria-hidden="true">
       <button onclick="filtrarPorCategoria('Pente')">Pentes</button>
       <button onclick="filtrarPorCategoria('Escova')">Escovas</button>
       <button onclick="filtrarPorCategoria('Creme')">Creme</button>
@@ -151,7 +159,7 @@
       <button onclick="filtrarPorCategoria('Kit')">Kits</button>
     </div>
 
-    <div id="menuMarcas" class="dropdownMenu">
+    <div id="menuMarcas" class="dropdownMenu" aria-hidden="true">
       <button onclick="filtrarPorMarca('seda')">Seda</button>
       <button onclick="filtrarPorMarca('salon line')">Salon Line</button>
       <button onclick="filtrarPorMarca('elseve')">Elseve</button>
@@ -199,26 +207,39 @@
   </div>
 
   <script>
-    // Funções de filtro
-    function toggleMenu(id) {
+    // Funções de filtro / UI
+    function toggleMenu(id, el) {
+      // fechar todos
       document.querySelectorAll('.dropdownMenu').forEach(m => m.style.display = "none");
       const menu = document.getElementById(id);
+      // posiciona o dropdown perto do elemento clicado (opcional)
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        menu.style.left = rect.left + 'px';
+        menu.style.top = (rect.bottom + window.scrollY + 6) + 'px';
+      }
       menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
     function filtrarPorCategoria(cat) {
       const lista = catalogo.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
       renderProdutos(lista);
+      closeAllDropdowns();
     }
 
     function filtrarPorMarca(marca) {
       const lista = catalogo.filter(p => p.tags.includes(marca.toLowerCase()));
       renderProdutos(lista);
+      closeAllDropdowns();
     }
 
     function buscar() {
       const termo = document.getElementById('searchInput').value.toLowerCase();
       renderProdutos(catalogo.filter(p => p.nome.toLowerCase().includes(termo)));
+    }
+
+    function closeAllDropdowns(){
+      document.querySelectorAll('.dropdownMenu').forEach(m => m.style.display = "none");
     }
 
     // Exibição dos produtos
@@ -230,32 +251,45 @@
         card.className = 'card';
         card.innerHTML = `
           <img src="${p.images[0]}" alt="${p.nome}">
-          <div class="card-content">
+          <div class="card-content" style="width:100%">
             <h4>${p.nome}</h4>
             <div class="dim">${p.categoria}</div>
             <div class="price-row">
               <button class="price-btn" aria-label="Ver preço de ${p.nome}">Ver preço</button>
+              <button class="add-btn" aria-label="Adicionar ${p.nome} ao carrinho">+</button>
             </div>
           </div>`;
+        // abrir modal ao clicar em ver preço
         card.querySelector('.price-btn').addEventListener('click', () => abrirModal(p));
+        // adicionar ao carrinho diretamente
+        card.querySelector('.add-btn').addEventListener('click', () => { addToCart(p); openCartPanel(); });
         grid.appendChild(card);
       });
     }
-
+    
     // Modal
     function abrirModal(prod) {
       currentProduct = prod;
-      modalImg.src = prod.images[0];
-      modalImg.alt = prod.nome;
-      modalTitle.textContent = prod.nome;
-      modalCat.textContent = prod.categoria;
-      modalPrice.textContent = 'R$ ' + prod.preco.toFixed(2).replace('.', ',');
-      modalBg.style.display = 'flex'; modalBg.setAttribute('aria-hidden', 'false');
+      document.getElementById('modalImg').src = prod.images[0];
+      document.getElementById('modalImg').alt = prod.nome;
+      document.getElementById('modalTitle').textContent = prod.nome;
+      document.getElementById('modalCat').textContent = prod.categoria;
+      document.getElementById('modalPrice').textContent = 'R$ ' + prod.preco.toFixed(2).replace('.', ',');
+      document.getElementById('modalBg').style.display = 'flex'; 
+      document.getElementById('modalBg').setAttribute('aria-hidden', 'false');
     }
 
     function fecharModal() {
-      modalBg.style.display = 'none'; modalBg.setAttribute('aria-hidden', 'true');
+      document.getElementById('modalBg').style.display = 'none'; 
+      document.getElementById('modalBg').setAttribute('aria-hidden', 'true');
     }
+
+    // Fechar modal ao clicar fora
+    document.getElementById('modalBg').addEventListener('click', function(e){
+      if(e.target === this) fecharModal();
+    });
+    // fechar modal com botão
+    document.getElementById('btnClose').addEventListener('click', fecharModal);
 
     // Carrinho
     let cart = [];
@@ -291,6 +325,22 @@
       cartSubtotalEl.textContent = subtotal.toFixed(2).replace('.', ',');
     }
 
+    // Abrir / fechar painel do carrinho
+    cartButton.addEventListener('click', () => {
+      if(cartPanel.classList.contains('open')) closeCartPanel();
+      else openCartPanel();
+    });
+
+    function openCartPanel(){
+      cartPanel.classList.add('open');
+      cartPanel.setAttribute('aria-hidden','false');
+      renderCart();
+    }
+    function closeCartPanel(){
+      cartPanel.classList.remove('open');
+      cartPanel.setAttribute('aria-hidden','true');
+    }
+
     // Finalizar compra via WhatsApp
     function finalizarCompra() {
       if (cart.length === 0) {
@@ -299,10 +349,29 @@
       }
       const numero = '5566999722543';
       let msg = 'Olá! Quero comprar os seguintes produtos:\n';
-      cart.forEach(i => msg += `${i.nome} x ${i.qtd} = R$ ${i.preco * i.qtd}\n`);
+      cart.forEach(i => msg += `${i.nome} x ${i.qtd} = R$ ${ (i.preco * i.qtd).toFixed(2).replace('.', ',') }\n`);
       msg += 'Subtotal: R$ ' + cart.reduce((a, b) => a + b.preco * b.qtd, 0).toFixed(2).replace('.', ',');
       window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
     }
+
+    // Compra rápida do produto mostrado no modal (botão do modal)
+    document.getElementById('btnWhats').addEventListener('click', function(){
+      if(!currentProduct){
+        alert('Nenhum produto selecionado');
+        return;
+      }
+      const numero = '5566999722543';
+      let msg = `Olá! Quero comprar: ${currentProduct.nome} - R$ ${currentProduct.preco.toFixed(2).replace('.', ',')}`;
+      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+
+    // Adicionar ao carrinho a partir do modal
+    document.getElementById('btnAddCart').addEventListener('click', function(){
+      if(!currentProduct) return;
+      addToCart(currentProduct);
+      fecharModal();
+      openCartPanel();
+    });
 
     // ---------------- CATALOGO DE PRODUTOS ----------------
     const catalogo = [
@@ -349,15 +418,25 @@
     const bannerEl = document.getElementById("bannerRotativo");
 
     function trocarBanner() {
+      // fade out
       bannerEl.style.opacity = 0;
       setTimeout(() => {
         bannerIndex = (bannerIndex + 1) % banners.length;
         bannerEl.src = banners[bannerIndex];
+        // fade in
         bannerEl.style.opacity = 1;
-      }, 500);
+      }, 500); // 500ms = tempo do fade
     }
 
+    // inicia a troca automática a cada 4s
     setInterval(trocarBanner, 4000);
+
+    // Fechar dropdowns se clicar fora
+    document.addEventListener('click', function(e){
+      const isMenuLink = e.target.closest('.menuLink');
+      const isDropdown = e.target.closest('.dropdownMenu');
+      if(!isMenuLink && !isDropdown) closeAllDropdowns();
+    });
   </script>
 </body>
 </html>
