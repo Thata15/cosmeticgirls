@@ -407,7 +407,7 @@
       }, 500);
     }
 
-       setInterval(trocarBanner, 4000);
+    setInterval(trocarBanner, 4000);
 
     const catalogo = [
       {id:'P001', nome:'Kit Completo Definição Natural - Salon line', categoria:'Kit', preco:96.3, tags:['salon line'], images:['1.png']},
@@ -447,6 +447,8 @@
       {id:'P035', nome:'Kit Novex Santo Black Gelatina 1KG + Creme Para Pentear 1KG', categoria:'Kit', preco:54.80, tags:['novex'], images:['37.jpeg']},
       {id:'P036', nome:'Kit Novex Santo Black Gelatina 1KG + Creme Para Pentear 500ML', categoria:'Kit', preco:55.00, tags:['novex'], images:['38.jpeg']},
       {id:'P037', nome:'Gelatina Novex Santo Black Poderoso Volumizadora', categoria:'Kit', preco:33.00, tags:['novex'], images:['39.jpeg']}
+
+
     ];
 
     renderProdutos(catalogo);
@@ -456,40 +458,8 @@
       const isDropdown = e.target.closest('.dropdownMenu');
       if(!isMenuLink && !isDropdown) closeAllDropdowns();
     });
-
-    /* ==========================
-       👇 MODAL PARA AMPLIAR IMAGEM
-    ========================== */
-    const modalImg = document.createElement("div");
-    modalImg.id = "imgModal";
-    modalImg.style.cssText = `
-      display:none; position:fixed; z-index:9999; left:0; top:0;
-      width:100%; height:100%; background:rgba(0,0,0,0.8);
-      justify-content:center; align-items:center;
-    `;
-    modalImg.innerHTML = `
-      <span id="closeImgModal" 
-      style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;">&times;</span>
-      <img id="imgModalContent" style="max-width:90%; max-height:90%; border-radius:12px;">
-    `;
-    document.body.appendChild(modalImg);
-
-    // Abrir modal ao clicar na imagem
-    document.addEventListener("click", function(e){
-      if(e.target.classList.contains("product-img")){
-        document.getElementById("imgModalContent").src = e.target.src;
-        document.getElementById("imgModal").style.display = "flex";
-      }
-    });
-
-    // Fechar modal
-    document.getElementById("closeImgModal").onclick = function(){
-      document.getElementById("imgModal").style.display = "none";
-    };
-
   </script>
 </body>
 </html>
-
 
 
